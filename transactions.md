@@ -6,21 +6,34 @@ Les transactions sont largement inspirée du système de Bitcoin.
 
 ```json
 {
-	version: 0,
-	flags: ["a", "olala"],
-	inputs: [
+	"version": 0,
+	"flags": [
+		"a",
+		"olala"
+	],
+	"inputs": [
 		{
-			previousOutput: {
-				transactionHash: "",
-				index: 0
+			"previousOutput": {
+				"transactionHash": "",
+				"index": 0
 			},
-			script: ["signature", "pubkey"]
+			"script": [
+				"signature",
+				"pubkey"
+			]
 		}
 	],
-	outputs: [
+	"outputs": [
 		{
-			value: 42,
-			script: ["OP_DUP", "OP_HASH160", "hash160(pubkey)", "OP_EQUAL", "OP_VERIFY", "OP_CHECKSIG"]
+			"value": 42,
+			"script": [
+				"OP_DUP",
+				"OP_HASH160",
+				"hash160(pubkey)",
+				"OP_EQUAL",
+				"OP_VERIFY",
+				"OP_CHECKSIG"
+			]
 		}
 	]
 }
@@ -64,6 +77,6 @@ Si autre chose qu’un mot-clé est présent, alors cette chose est simplement m
 
 Ces mots-clés suffisent à réaliser une transaction basique de type P2PKH :
 
-Script de l’entrée : OP_DUP OP_HASH160 hash160(pubkey) OP_EQUAL OP_VERIFY OP_CHECKSIG
+Script de l’entrée : `OP_DUP OP_HASH160 hash160(pubkey) OP_EQUAL OP_VERIFY OP_CHECKSIG`
 
-Script de la sortie : <signature> <pubkey>
+Script de la sortie : `<signature> <pubkey>`
