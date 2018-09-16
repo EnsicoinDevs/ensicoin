@@ -12,4 +12,4 @@ Les messages échangés via le réseau sont décrits ici : [messages.md](messag
 
 Les transactions sont détaillées ici : [transactions.md](transactions.md).
 
-Les blocks sont détaillés ici : [blocks.md](block.md).
+Les blocks sont détaillés ici : [blocks.md](blocks.md).
