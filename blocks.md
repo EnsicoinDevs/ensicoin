@@ -48,7 +48,7 @@ Tous ces blocks (et chaînes) DOIVENT être stockées par le nœuds, car ils peu
 	1. Enlever les transactions de la piscine des transactions
 	2. Transmettre le block aux autres nœuds
 13. Pour le cas 2, on ne fait rien.
-14. pour le cas 3, une branche secondaire devient la branche principale.
+14. Pour le cas 3, une branche secondaire devient la branche principale.
 	1. Trouver le « fork-block », c’est-à-dire le block ou la chaîne principale et la chaîne secondaire se séparent
 	2. Modifier la chaîne principale pour n’aller qu’à ce block
 	3. Ajouter les blocks de la branche secondaire à la branche principale en validant
