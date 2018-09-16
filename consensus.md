@@ -10,7 +10,9 @@ Il s’agit d’un nombre très grand (256-bit) que tous les nœuds doivent part
 
 Le target est ajustée tous les 2016 blocks afin que le temps moyen entre les blocks soit d’environ 2.5 minutes.
 
+```
 2016 blocks * 2.5 minutes = 302400 secondes = 84 heures = 3.5 jours
+```
 
 Quand 2016 blocks sont passés, on remonte l’historique de 2016 blocks et on calcule la différence entre le timestamp du block actuel et du block précédent. Cette différence doit être bornée dans [84 heures / 4, 84 heures * 4] afin d’éviter un changement de difficulté trop fort.
 
