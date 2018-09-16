@@ -23,6 +23,14 @@ Un block est composé de deux parties : le header et les transactions. Une tran
 
 La liste des transactions est dans cet exemple vide, mais elle doit toujours contenir une (et une seule) (et commencer) par une transaction de génération (coinbase). Cette transaction spéciale créer des ENSICOIN comme récompense pour le mineur ([voir ici](transations.md)).
 
+On peut classer les blocks dans trois catégories :
+
+1. Les blocks de la chaîne principale (la plus longue)
+2. Les blocks d’une chaîne secondaire (une chaîne moins longue que la chaîne principale)
+3. Les blocks orphelins (des blocks dont on ne connais pas au moins un des ancêtres)
+
+Tous ces blocks (et chaînes) DOIVENT être stockées par le nœuds, car ils peuvent éventuellement devenir la chaîne principale.
+
 ## Règles de validation
 
 1. Vérifier le format
