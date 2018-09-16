@@ -16,14 +16,18 @@ Quand 2016 blocks sont passés, on remonte l’historique de 2016 blocks et on c
 
 Finalement, on récupère le target de la fenêtre précédente et on définit le nouveau target comme :
 
+```
 new target = old target * time for 2016 blocks / 84 hours
+```
 
 Maintenant, qu’est-ce que la difficulté dont on parle tant ? Il s’agit d’une mesure inversement proportionnelle au target. Elle est plus compréhensible pour les humains, mais inutile pour l’implémentation.
 
-Pour avoir plus de détails sur calcul de cette mesure, vous pouvez lire cette page : [en.bitcoin.it/wiki/Difficulty](https://en.bitcoin.it/wiki/Difficulty).
+Pour avoir plus de détails sur calcul de cette mesure, vous pouvez lire cette page : https://en.bitcoin.it/wiki/Difficulty.
 
 ## Récompense et création des ENSICOIN
 
 La récompense des mineurs est mise à jour tous les 210000 blocks. Elle est calculée ainsi :
 
+```
 (42 * 100000000) >> (height / 210000)
+```
