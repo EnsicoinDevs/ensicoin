@@ -2,7 +2,7 @@
 
 Les règles de l’ENSCOIN doivent être suivies par tous les nœuds afin d’atteindre un consensus. Elles sont basées sur les règles de litecoin.
 
-## Difficulté
+## Difficulté
 
 Avant d’expliquer la difficulté, expliquons ce qu’est le target.
 
