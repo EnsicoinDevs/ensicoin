@@ -13,3 +13,12 @@ Les messages échangés via le réseau sont décrits ici : [messages.md](messag
 Les transactions sont détaillées ici : [transactions.md](transactions.md).
 
 Les blocks sont détaillés ici : [blocks.md](blocks.md).
+
+Un guide d’implémentation : [guide.md](guide.md).
+
+## Par où commencer ?
+
+Pour le moment, aucune implémentation n’est fonctionnelle. Vous pouvez commencer à un réaliser une. Pour cela, vous devez :
+
+- savoir comment une blockchain fonctionne (par exemple celle de Bitcoin)
+- lire les documents ci-dessus, sauf peut-être le guide d’implémentation
