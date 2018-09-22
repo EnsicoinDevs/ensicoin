@@ -39,6 +39,10 @@ Les transactions sont largement inspirée du système de Bitcoin.
 }
 ```
 
+## La mempool
+
+La mempool est la liste des transactions valides mais qui ne sont pas encore dans la blockchain. Il est très important que tous les nœuds maintiennent une telle liste afin d’assurer la propagation des transactions.
+
 ## Règles de validation
 
 1. Vérifier le format de la transaction
