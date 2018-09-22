@@ -143,7 +143,7 @@ Nous en avons terminé avec les messages. Voici maintenant quelques exemple d’
 
 1. Le nouveau nœud envoie un message `whoami` à un autre nœud.
 2. Cet autre nœud répond avec un message `whoami`. La connexion est établie.
-3. Le nouveau nœud envoie un message `getblocks` vide à ce nœud pour effectuer sa première syncronisation.
+3. Le nouveau nœud envoie un message `getblocks` vide à ce nœud pour effectuer sa première synchronisation.
 4. Celui-ci répond avec un message `inv` contenant la liste des hashs de tous les blocks de la blockchain.
 5. Le nouveau nœùd répond avec un message `getdata` contenant le message `inv` précédent.
 6. L’autre nœud va répondre avec de nombreux messages `block`.
