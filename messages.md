@@ -35,7 +35,7 @@ Lorsque qu’un client tente de se connecter à un nœud, il doit envoyer un mes
 
 ```json
 {
-	"version": 0.1,
+	"version": 0,
 }
 ```
 
