@@ -149,3 +149,9 @@ Nous en avons terminé avec les messages. Voici maintenant quelques exemple d’
 6. L’autre nœud va répondre avec de nombreux messages `block`.
 7. Le nouveau nœud peut aussi envoyer un message `getmempool` pour remplir sa mempool.
 
+### Un mineur trouve un block
+
+1. Le mineur utilise son nœud pour envoyer un message de type `block` à ses voisins.
+2. Ses voisins vérifient le block, puis envoient à leurs voisins un message de type `inv` contenant l’identifiant de ce nouveau block.
+3. Ces autres nœuds vont vérifier qu’ils ne connaissent pas déjà cet identifiant, puis demander aux émetteurs de ces messages `inv` le contenu du block en lui-même à l’aide du message `getdata`.
+4. Et ainsi de suite jusqu’à que le block soit propagé.
