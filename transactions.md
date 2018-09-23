@@ -61,6 +61,8 @@ La mempool est la liste des transactions valides mais qui ne sont pas encore dan
 14. Envoyer aux autres nœuds
 15. Executer tout ça sur les transactions orphelines qui utilisent cette transaction
 
+Si la transaction est une coinbase, il convient de se réferer à ce document [consensus.md](consensus.md), où des détails sont donnés sur la création des ENSICOIN.
+
 ## Script
 
 Cette section va détailler le langage des scripts situés dans les entrées et les sorties des transactions. L’idée est d’avoir un langage de script simple qui n’est pas turing-complet. Comme pour Bitcoin, on s’inspirera de [FORTH](https://www.forth.com/forth/).
