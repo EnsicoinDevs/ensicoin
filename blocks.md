@@ -31,6 +31,20 @@ On peut classer les blocks dans trois catégories :
 
 Tous ces blocks (et chaînes) DOIVENT être stockées par le nœuds, car ils peuvent éventuellement devenir la chaîne principale.
 
+## Calcul du hash d’un block
+
+Pour calculer le hash d’un block (son identifiant) il convient de suivre l’algorithme suivant :
+
+1. Construire la chaîne de caractères suivante :
+	1. Ajouter `version`
+	2. Ajouter `flags` en collant les valeurs une à une (sans utiliser de caractère de séparation)
+	3. Ajouter `hashPrevBlock`, `hashTransactions`, `timestamp` et `nonce`
+2. Hasher cette chaîne de caractère avec l’algorithme SHA-256
+3. Hasher le hash obtenu à nouveau
+4. Encoder ce dernier hash en hexadécimal
+
+Il n’y a pas besoin de signer un block car il ne peut pas être modifié : il faudrait recalculer le `nonce`, ce qui devrait être difficile.
+
 ## Règles de validation
 
 1. Vérifier le format
