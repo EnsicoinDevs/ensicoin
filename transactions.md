@@ -43,6 +43,27 @@ Les transactions sont largement inspirée du système de Bitcoin.
 
 La mempool est la liste des transactions valides mais qui ne sont pas encore dans la blockchain. Il est très important que tous les nœuds maintiennent une telle liste afin d’assurer la propagation des transactions.
 
+## Calcul du hash d’une transaction
+
+Voici l’algorithme à suivre pour obtenir le hash (ou identifiant) d’une transaction :
+
+1. Créer la chaîne de caractère suivante :
+	1. Commencer avec `version`
+	2. Ajouter les valeurs de `flags` en les collants une à une (sans caractère de séparation)
+	3. Pour chaque entrée, ajouter `transactionHash`, `index` et `script` (toujours sans caractère de séparation)
+	4. Pour chaque sortie, ajouter `value` et `script`
+2. Hasher le résultat avec l’algorithme SHA-256
+3. Hasher ce premier hash une deuxième fois
+4. Encoder le ce second hash en hexadécimal
+
+C’est cette dernière valeur qui sera utilisée dans le protocole.
+
+## Calcul des signatures
+
+Il n’est pas possible de calculer la signature d’une transaction à partir de son hash étant donné que la signature fait partie du hash lui-même (il peut y avoir plusieurs signatures s’il y a plusieurs entrées).
+
+Pour calculer la signature d’une transaction, il faut donc considérer son hash sans les scripts des entrées.
+
 ## Règles de validation
 
 1. Vérifier le format de la transaction
