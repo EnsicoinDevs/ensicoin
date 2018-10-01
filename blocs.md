@@ -1,6 +1,6 @@
 # Blocs
 
-Un bloc est composé de deux parties : Son en-tête et les transactions. Une transaction est identifiée par son hachage, un bloc par le hachage de son header.
+Un bloc est composé de deux parties : Son en-tête et les transactions. Une transaction est identifiée par son empreinte, un bloc par l'empreinte de son header.
 
 ## Format général
 
@@ -31,17 +31,17 @@ On peut classer les blocs dans trois catégories :
 
 Tous ces blocs (et chaînes) DOIVENT être stockées par les nœuds, car ils peuvent éventuellement devenir la chaîne principale.
 
-## Calcul du hachage d’un bloc
+## Calcul de l'empreinte d’un bloc
 
-Pour calculer le hachage d’un bloc (son identifiant) il convient de suivre l’algorithme suivant :
+Pour calculer l'empreinte d’un bloc (son identifiant) il convient de suivre l’algorithme suivant :
 
 1. Construire la chaîne de caractères suivante :
 	1. Ajouter `version`
 	2. Ajouter `flags` en collant les valeurs une à une (sans utiliser de caractère de séparation)
 	3. Ajouter `hashPrevBlock`, `hashTransactions`, `timestamp` et `nonce`
-2. Hasher cette chaîne de caractère avec l’algorithme SHA-256
-3. Hasher le hachage obtenu à nouveau
-4. Encoder ce dernier hachage en hexadécimal
+2. Hacher cette chaîne de caractère avec l’algorithme SHA-256
+3. Hacher l'empreinte obtenu à nouveau
+4. Encoder cette dernier empreinte en hexadécimal
 
 Il n’y a pas besoin de signer un bloc car il ne peut pas être modifié : il faudrait recalculer le `nonce`, ce qui devrait être difficile.
 
@@ -51,11 +51,11 @@ Il n’y a pas besoin de signer un bloc car il ne peut pas être modifié : il 
 2. Rejeter si ce bloc est déjà dans la base de données
 3. Rejeter s’il n’est dans aucune des trois catégories
 4. La liste des transactions doit être non-vide
-5. Le hachage de l’en-tête du bloc doit être inférieur à l'objectif actuel
+5. L'empreinte de l’en-tête du bloc doit être inférieur à l'objectif actuel
 6. Le timestamp du bloc doit être inférieur à 2 heures dans le futur
 7. La première transaction doit être une coinbase, le reste ne doit pas l’être
 8. Valider chaque transaction ([voir ici](transactions.md))
-9. Vérifier le hachage des transactions
+9. Vérifier l'empreinte des transactions
 10. Vérifier que le bloc précédent est dans la branche principale (cat 1) ou dans une branche secondaire (cat 2). Sinon, ajouter ce bloc à la liste des blocs orphelins (cat 3), puis demander au nœud qui nous a envoyé ce bloc son bloc précédent. C’est terminé pour ce bloc
 11. Ajouter le bloc à la base de données. Trois cas : 1. le bloc agrandit la chaîne principale ; 2. le bloc agrandit une chaîne secondaire mais pas assez pour qu’elle devienne la branche principale ; 3. le bloc agrandit une chaîne secondaire et celle-ci devient la branche principale.
 12. Pour le cas 1, ajouter à la branche principale :

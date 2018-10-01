@@ -10,6 +10,6 @@ bloc change et pointe vers sa version "précédente". Dès qu'un nœud est modif
 - Nœud génèse (genesis-block): Nœud le plus vieux, unique et prédéterminé au sein de la chaine de blocs.
 
 - Objectif (target): Il s’agit d’un nombre très grand (256-bit) que tous les nœuds doivent partager.
-Le hachage de l’en-tête d’un bloc doit être inférieur ou égal à ce nombre au moment ou le bloc est créé pour être valide.
+L'empreinte de l’en-tête d’un bloc doit être inférieur ou égal à ce nombre au moment ou le bloc est créé pour être valide.
 Plus l'objectif est bas, plus il est "difficile" de trouver un bloc valide.
 

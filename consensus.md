@@ -6,7 +6,7 @@ Les règles de l’ENSCOIN doivent être suivies par tous les nœuds afin d’at
 
 Avant d’expliquer la difficulté, expliquons ce qu’est l'objectif.
 
-Il s’agit d’un nombre très grand (256-bit) que tous les nœuds doivent partager. Le hachage de l’en-tête d’un bloc doit être inférieur ou égal à ce nombre au moment ou le bloc est créé pour être valide. Plus l'objectif est bas, plus il est difficile de trouver un block valide.
+Il s’agit d’un nombre très grand (256-bit) que tous les nœuds doivent partager. L'empreinte de l’en-tête d’un bloc doit être inférieur ou égal à ce nombre au moment ou le bloc est créé pour être valide. Plus l'objectif est bas, plus il est difficile de trouver un block valide.
 
 L'objectif est ajusté tous les 2016 blocs afin que le temps moyen entre les blocs soit d’environ 2.5 minutes.
 
