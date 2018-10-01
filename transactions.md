@@ -41,28 +41,28 @@ Les transactions sont largement inspirée du système de Bitcoin.
 
 ## La mempool
 
-La mempool est la liste des transactions valides mais qui ne sont pas encore dans la blockchain. Il est très important que tous les nœuds maintiennent une telle liste afin d’assurer la propagation des transactions.
+La mempool est la liste des transactions valides mais qui ne sont pas encore incorporées dans la chaine de blocs. Il est très important que tous les nœuds maintiennent une telle liste afin d’assurer la propagation des transactions.
 
-## Calcul du hash d’une transaction
+## Calcul de l'empreinte d’une transaction
 
-Voici l’algorithme à suivre pour obtenir le hash (ou identifiant) d’une transaction :
+Voici l’algorithme à suivre pour obtenir l'empreinte d’une transaction :
 
 1. Créer la chaîne de caractère suivante :
 	1. Commencer avec `version`
 	2. Ajouter les valeurs de `flags` en les collants une à une (sans caractère de séparation)
 	3. Pour chaque entrée, ajouter `transactionHash`, `index` et `script` (toujours sans caractère de séparation)
 	4. Pour chaque sortie, ajouter `value` et `script`
-2. Hasher le résultat avec l’algorithme SHA-256
-3. Hasher ce premier hash une deuxième fois
-4. Encoder le ce second hash en hexadécimal
+2. Hacher le résultat avec l’algorithme SHA-256
+3. Hacher ce premier hash une deuxième fois
+4. Encoder cette seconde empreinte en hexadécimal
 
 C’est cette dernière valeur qui sera utilisée dans le protocole.
 
 ## Calcul des signatures
 
-Il n’est pas possible de calculer la signature d’une transaction à partir de son hash étant donné que la signature fait partie du hash lui-même (il peut y avoir plusieurs signatures s’il y a plusieurs entrées).
+Il n’est pas possible de calculer la signature d’une transaction à partir de son empreinte étant donné que la signature fait partie de l'empreinte elle-même (il peut y avoir plusieurs signatures s’il y a plusieurs entrées).
 
-Pour calculer la signature d’une transaction, il faut donc considérer son hash sans les scripts des entrées.
+Pour calculer la signature d’une transaction, il faut donc considérer son empreinte sans les scripts des entrées.
 
 ## Règles de validation
 
@@ -72,7 +72,7 @@ Pour calculer la signature d’une transaction, il faut donc considérer son has
 4. Les valeurs des sorties doivent être supérieures à 0
 5. Vérifier que cette transaction n’est pas une coinbase, sauf si elle est au début d’un block
 6. La somme des sorties doit être strictement inférieure à celle des entrées
-7. Rejeter si on a déjà une transaction avec le même hash dans la chaîne principale ou dans la piscine des transactions
+7. Rejeter si on a déjà une transaction avec la même empreinte dans la chaîne principale ou dans la piscine des transactions
 8. Pour toutes les entrées, si la sortie reférencée l’est déjà dans une entrée de la chaîne principale alors rejeter
 9. Pour toutes les entrées, regarder dans la chaîne principale ou dans la piscine si la transaction référencée existe. Si ce n’est pas le cas, il s’agit d’une transaction orpheline. Il faut alors l’ajouter dans la liste des transactions orphelines sauf s’il y a déjà une transaction qui correspond à celle-ci dans cette liste.
 10. Pour toutes les entrées, si une des sorties reférencée est une coinbase, alors il faut vérifier qu’au moins 42 blocks sont passés depuis.
