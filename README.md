@@ -6,19 +6,21 @@ Ce dépôt contient les détails du protocole de l’ENSICOIN. En théorie, les 
 
 ## Documents
 
-Les règles de base du consensus sont lisibles ici : [consensus.md](consensus.md).
+Les règles de base du consensus sont lisibles ici : [consensus](consensus.md).
 
-Les messages échangés via le réseau sont décrits ici : [messages.md](messages.md).
+Les messages échangés via le réseau sont décrits ici : [messages](messages.md).
 
-Les transactions sont détaillées ici : [transactions.md](transactions.md).
+Les transactions sont détaillées ici : [transactions](transactions.md).
 
-Les blocs sont détaillés ici : [blocs.md](blocs.md).
+Les blocs sont détaillés ici : [blocs](blocs.md).
 
-Un guide d’implémentation : [guide.md](guide.md).
+Un guide d’implémentation : [guide](guide.md).
+
+Le glossaire : [glossaire](glossaire.md).
 
 ## Par où commencer ?
 
 Pour le moment, aucune implémentation n’est fonctionnelle. Vous pouvez commencer à un réaliser une. Pour cela, vous devez :
 
-- savoir comment une blockchain fonctionne (par exemple celle de Bitcoin)
+- savoir comment une chaine de blocs fonctionne (par exemple celle de Bitcoin)
 - lire les documents ci-dessus, sauf peut-être le guide d’implémentation
