@@ -145,4 +145,4 @@ Voici quelques idées de choses à faire ensuite :
 
 ## Trouver de l’aide
 
-Vous pouvez trouver de l’aide sur le serveur Discord de la promotion 2021 de l’Ensimag dans le salon #ensicoin, ou en ouvrant une nouvelle issue sur dépôt github.
+Vous pouvez trouver de l’aide sur le serveur Discord de la promotion 2021 de l’Ensimag dans le salon #ensicoin, ou en ouvrant une nouvelle issue sur ce dépôt github.
