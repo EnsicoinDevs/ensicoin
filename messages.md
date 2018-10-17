@@ -102,7 +102,7 @@ Comme pour le message de type `inv`, il contient le type de la ressource et son 
 
 ### `block`
 
-Ce message est décrit dans [blocks.md](blocks.md).
+Ce message est décrit dans [blocks.md](blocs.md).
 
 ### `transaction`
 
