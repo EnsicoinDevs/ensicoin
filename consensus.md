@@ -33,3 +33,11 @@ La récompense des mineurs est mise à jour tous les 210000 blocks. Elle est cal
 ```
 (42 * 100000000) >> (height / 210000)
 ```
+
+## Constantes
+
+Certaines constantes doivent être définies pour assurer une communication fonctionnelle entre les différents nœuds du réseau.
+
+Le port par défaut sur lequel les nœuds écoutent doit être : `4224`.
+
+Le nombre magique du réseau principal est : `422021`.
