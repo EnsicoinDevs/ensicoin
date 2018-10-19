@@ -21,7 +21,7 @@ Un bloc est composé de deux parties : Son en-tête et les transactions. Une tr
 }
 ```
 
-La liste des transactions est dans cet exemple vide, mais elle doit toujours contenir une (et une seule) (et commencer) par une transaction de génération (coinbase). Cette transaction spéciale créer des ENSICOIN comme récompense pour le mineur ([voir ici](transactions.md)).
+La liste des transactions est dans cet exemple vide, mais elle doit toujours contenir au moins une transaction. Cette transaction doit être une transaction de génération (coinbase), et doit toujours être au début de la liste des transactions. Cette transaction spéciale créer des ENSICOIN comme récompense pour le mineur ([voir ici](transactions.md)).
 
 On peut classer les blocs dans trois catégories :
 
