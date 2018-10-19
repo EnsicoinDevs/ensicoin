@@ -41,3 +41,24 @@ Certaines constantes doivent être définies pour assurer une communication fonc
 Le port par défaut sur lequel les nœuds écoutent doit être : `4224`.
 
 Le nombre magique du réseau principal est : `422021`.
+
+Le genesis block, c’est-à-dire le premier block de la blockchain principale de l’ENSICOIN est :
+
+```json
+{
+  "hash": "7b637aab7a303e166ffa1e6c808d11b64fe9ac6c64648e3ad79861ee0b7edf11",
+  "header": {
+    "version": 0,
+    "flags": [
+      "ici cest limag"
+    ],
+    "hashPrevBlock": "",
+    "hashTransactions": "",
+    "timestamp": 1566862920,
+    "nonce": 42
+  },
+  "transactions": null
+}
+```
+
+Ce block est invalide, c’est pour cela qu’il est considéré comme une constante.
