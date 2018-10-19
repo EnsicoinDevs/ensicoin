@@ -31,6 +31,8 @@ On peut classer les blocs dans trois catégories :
 
 Tous ces blocs (et chaînes) DOIVENT être stockées par les nœuds, car ils peuvent éventuellement devenir la chaîne principale.
 
+Le premier bloc de la blockchain principale de l’ENSICOIN est décrit [ici](consensus.md).
+
 ## Calcul de l'empreinte d’un bloc
 
 Pour calculer l'empreinte d’un bloc (son identifiant) il convient de suivre l’algorithme suivant :
