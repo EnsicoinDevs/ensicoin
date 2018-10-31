@@ -10,7 +10,7 @@ Un message doit toujours suivre ce format :
 
 ```json
 {
-	"magic": 42,
+	"magic": 422021,
 	"type": "olala",
 	"timestamp": 0,
 	"message": {}
