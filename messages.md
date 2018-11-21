@@ -2,6 +2,8 @@
 
 Ce document décrit les différents messages échangés entre les nœuds.
 
+Tous les entiers sont stockés en Big Endian.
+
 ## Header d’un message
 
 Un message doit toujours commencer par cette structure :
@@ -10,7 +12,7 @@ Un message doit toujours commencer par cette structure :
 | ---------- | ----------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | 4          | magic       | uint32    | Cette constante magique permet de différencier plusieurs réseaux différents. De plus, elle peut servir de séparateur entre les messages. |
 | 12         | type        | char[12]  | Une chaîne de caractères indiquant le type du message                                                                                    |
-| 4          | length      | uint32    | Taille de la `payload` en octets.                                                                                                        |
+| 4          | length      | var_uint  | Taille de la `payload` en octets.                                                                                                        |
 | length     | payload     | char\[]   | Le message proprement dit.                                                                                                               |
 
 Le champ `magic` contient un nombre identifiant le réseau. Cela permet de s’assurer que le message est bien destiné à un nœud ENSICOIN. Ce nombre est donné dans le fichier [consensus.md](consensus.md).
@@ -25,24 +27,24 @@ Cette structure doit être utilisée quand l’adresse d’un nœud doit être p
 
 | Field Size | Description | Data Type | Comments                                                                                                                                          |
 | ---------- | ----------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 4          | timestamp   | uint32    | Timestamp standard UNIX indiquant la dernière fois où ce nœud a été actif.                                                                        |
+| 4          | timestamp   | uint64    | Timestamp standard UNIX indiquant la dernière fois où ce nœud a été actif.                                                                        |
 | 16         | IPv6/4      | char[16]  | Une adresse IPv6. Pour transmettre une adresse IPv4, il faut utiliser [ce format](https://en.wikipedia.org/wiki/IPv6#IPv4-mapped_IPv6_addresses). |
 | 2          | port        | uint16    | Le port réseau.                                                                                                                                   |
 
-### Variable length integer (`var_int`)
+### Variable length integer (`var_uint`)
 
-| Value                                    | Bytes Used | Format |
-| ---------------------------------------- | ---------- | ------ |
-| >= 0 && \<= 252                          | 1          | uint8  |
-| >= 253 && \<= 0xFFFF                     | 3          | uint16 |
-| >= 0x10000 && \<= 0xFFFFFFFF             | 5          | uint32 |
-| >= 0x100000000 && \<= 0xFFFFFFFFFFFFFFFF | 9          | uint64 |
+| Value                                    | Bytes Used | Format                                |
+| ---------------------------------------- | ---------- | ------------------------------------- |
+| >= 0 && \<= 252                          | 1          | uint8                                 |
+| >= 253 && \<= 0xFFFF                     | 3          | 0xFD followed by the number as uint16 |
+| >= 0x10000 && \<= 0xFFFFFFFF             | 5          | 0XFE followed by the number as uint32 |
+| >= 0x100000000 && \<= 0xFFFFFFFFFFFFFFFF | 9          | 0XFF followed by the number as uint64 |
 
 ### Variable length string (`var_str`)
 
 | Field Size | Description | Data Type | Comments                             |
 | ---------- | ----------- | --------- | ------------------------------------ |
-| ?          | length      | var_int   | Longueur de la chaîne de caractères. |
+| ?          | length      | var_uint  | Longueur de la chaîne de caractères. |
 | ?          | string      | char\[]   | La chaîne de caractères.             |
 
 ### `inv_vect`
@@ -70,7 +72,7 @@ Lorsque qu’un client tente de se connecter à un nœud, il doit envoyer un mes
 | Field Size | Description | Data Type | Comments                                               |
 | ---------- | ----------- | --------- | ------------------------------------------------------ |
 | 4          | version     | uint32    | Le numéro de version du protocole utilisé par le nœud. |
-| 8          | timestamp   | int64     | Un timestamp UNIX standard en secondes.                |
+| 8          | timestamp   | uint64     | Un timestamp UNIX standard en secondes.                |
 
 Afin d’établir la connexion, les deux nœuds devront aussi échanger des messages de type `whoamiack`. Ce message ne possède pas de `payload`. Il suffit de définir `type` à `whoamiack`.
 
@@ -91,7 +93,7 @@ Le message `addr` permet de donner des informations à propos de nœuds connus d
 
 | Field Size | Description | Data Type  | Comments                      |
 | ---------- | ----------- | ---------- | ----------------------------- |
-| 1+         | count       | var_int    | Nombre d’adresses du message. |
+| 1+         | count       | var_uint   | Nombre d’adresses du message. |
 | 22 \* ?    | addresses   | address\[] | Liste de nœuds.               |
 
 Le message `getaddr` permet de demander à un ordre nœud des informations sur les nœuds du réseaux que ce nœud connait. En réponse à ce message, un message `addr` doit être envoyé. On considère qu’un nœud est vivant si on a reçu un message de lui il y a moins de trois heures. Passé ce délai, le nœud doit être oublié et ne doit donc pas être partagé.
@@ -117,7 +119,7 @@ Ces messages sont décrits plus bas.
 
 | Field Size | Description | Data Type   | Comments                            |
 | ---------- | ----------- | ----------- | ----------------------------------- |
-| ?          | count       | uint32      | Nombre d’entrées dans l’inventaire. |
+| ?          | count       | var_uint    | Nombre d’entrées dans l’inventaire. |
 | 36 \* ?    | inventory   | inv_vect\[] | Vecteurs de l’inventaire.           |
 
 ### `getdata`
@@ -141,14 +143,14 @@ Ce message est envoyé en réponse d’un `getdata`, il représente un bloc. Pou
 | Field Size | Description | Data type  | Comments                                                           |
 | ---------- | ----------- | ---------- | ------------------------------------------------------------------ |
 | 4          | version     | uint32     | La version de la transaction.                                      |
-| 1+         | flags_count | var_int    | Nombre de drapeaux.                                                |
+| 1+         | flags_count | var_uint   | Nombre de drapeaux.                                                |
 | ?          | flags       | var_str\[] | Liste des drapeaux.                                                |
 | 32         | prev_block  | char[32]   | Le hash du block précédent.                                        |
 | 32         | merkle_root | char[32]   | Le hash de l’arbre de Merkle des transactions.                     |
-| 4          | timestamp   | uint32     | Un timestamp standard UNIX correspondant à la création de ce bloc. |
+| 4          | timestamp   | uint64     | Un timestamp standard UNIX correspondant à la création de ce bloc. |
 | 4          | bits        | uint32     | Le target utilisé pour calculer ce bloc.                           |
 | 4          | nonce       | uint32     | Le nonce utilisé pour générer ce bloc.                             |
-| 1+         | txs_count   | var_int    | Le nombre de transactions du bloc.                                 |
+| 1+         | txs_count   | var_uint   | Le nombre de transactions du bloc.                                 |
 | ?          | txs         | tx\[]      | La liste des transactions du bloc.                                 |
 
 ### `tx`
@@ -158,11 +160,11 @@ Ce message est envoyé en réponse d’un `getdata`, il représente une transact
 | Field Size | Description   | Data type  | Comments                             |
 | ---------- | ------------- | ---------- | ------------------------------------ |
 | 4          | version       | uint32     | La version de la transaction.        |
-| 1+         | flags_count   | var_int    | Nombre de drapeaux.                  |
+| 1+         | flags_count   | var_uint   | Nombre de drapeaux.                  |
 | ?          | flags         | var_str\[] | Liste des drapeaux.                  |
-| 1+         | inputs_count  | var_int    | Nombre d’entrées de la transaction.  |
+| 1+         | inputs_count  | var_uint   | Nombre d’entrées de la transaction.  |
 | 37+        | inputs        | tx_in\[]   | Liste des entrées de la transaction. |
-| 1+         | outputs_count | var_int    | Nombre de sorties de la transaction. |
+| 1+         | outputs_count | var_uint   | Nombre de sorties de la transaction. |
 | 9+         | outputs_count | tx_out\[]  | Liste des sorties de la transaction. |
 
 Une `tx_in` suit ce format :
@@ -170,7 +172,7 @@ Une `tx_in` suit ce format :
 | Field Size | Description     | Data type | Comments                                          |
 | ---------- | --------------- | --------- | ------------------------------------------------- |
 | 36         | previous_output | outpoint  | Pointeur vers la sortie que dépense cette entrée. |
-| 1+         | script length   | var_int   | La taille du script.                              |
+| 1+         | script length   | var_uint  | La taille du script.                              |
 | ?          | script          | uchar\[]  | Le script en lui-même.                            |
 
 Un `outpoint` suit ce format :
@@ -185,7 +187,7 @@ Une `tx_out` suit ce format :
 | Field Size | Description   | Data type | Comments                |
 | ---------- | ------------- | --------- | ----------------------- |
 | 8          | value         | uint64    | La valeur de la sortie. |
-| 1+         | script length | var_int   | La taille du script.    |
+| 1+         | script length | var_uint  | La taille du script.    |
 | ?          | script        | uchar\[]  | Le script en lui-même.  |
 
 ### `getblocks`
@@ -194,7 +196,7 @@ Ce message est utilisé par un nœud pour demander un message de type `inv`. Il 
 
 | Field Size | Description          | Data Type  | Comments                                                               |
 | ---------- | -------------------- | ---------- | ---------------------------------------------------------------------- |
-| 4          | count                | uint32     | Nombre de hashs dans le champ `block locator`.                         |
+| 4          | count                | var_uint   | Nombre de hashs dans le champ `block locator`.                         |
 | 32 \* ?    | block locator object | char[32][] | Liste de hashs partant du block le plus haut vers le genesis block.    |
 | 32         | hash_stop            | char[32]   | Hash du dernier block désiré. Définir à 0 pour ne pas fixer de limite. |
 
