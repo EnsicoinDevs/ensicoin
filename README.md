@@ -10,9 +10,9 @@ Les règles de base du consensus sont lisibles ici : [consensus](consensus.md).
 
 Les messages échangés via le réseau sont décrits ici : [messages](messages.md).
 
-Les transactions sont détaillées ici : [transactions](transactions.md).
+Les règles de validation sont décrites ici : [validation](validation.md).
 
-Les blocs sont détaillés ici : [blocs](blocs.md).
+Finalement, les scripts sont détaillés ici : [scripts](scripts.md).
 
 Un guide d’implémentation : [guide](guide.md).
 

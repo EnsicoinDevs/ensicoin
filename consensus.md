@@ -49,9 +49,7 @@ Le genesis block, c’est-à-dire le premier block de la blockchain principale d
   "hash": "7b637aab7a303e166ffa1e6c808d11b64fe9ac6c64648e3ad79861ee0b7edf11",
   "header": {
     "version": 0,
-    "flags": [
-      "ici cest limag"
-    ],
+    "flags": ["ici cest limag"],
     "hashPrevBlock": "",
     "hashTransactions": "",
     "timestamp": 1566862920,

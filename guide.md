@@ -126,10 +126,7 @@ La validation des blocks étant plus simple à réaliser que celle des transacti
 Voici, dans l’ordre, ce que vous pouvez faire :
 
 - Terminer l’implémentation des messages `inv` et `getdata`
-- Implémenter le message `blocks`
-	- Sauvegarder les blocks
-	- Sauvegarder les blocks orphelins
-	- Gérer correctement la chaîne la plus « longue », et donc les « forks »
+- Implémenter le message `blocks` - Sauvegarder les blocks - Sauvegarder les blocks orphelins - Gérer correctement la chaîne la plus « longue », et donc les « forks »
 - Implémenter le message `getblocks`
 
 Ce dernier message est celui qui va permettre à votre nœud de ce synchroniser au réseau. Il est très important, et vous permettra aussi de tester votre nœud sur un autre nœud.

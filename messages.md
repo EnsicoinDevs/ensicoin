@@ -2,56 +2,111 @@
 
 Ce document décrit les différents messages échangés entre les nœuds.
 
-**Ce document est encore incomplet.** En effet, il y manque les messages permettant de découvrir les nœud du réseaux. Sans ces messages, un nœud restera seul ou au mieux connecté aux mêmes nœuds.
+## Header d’un message
 
-## Format général
+Un message doit toujours commencer par cette structure :
 
-Un message doit toujours suivre ce format :
-
-```json
-{
-	"magic": 422021,
-	"type": "olala",
-	"timestamp": 0,
-	"message": {}
-}
-```
+| Field Size | Description | Data Type | Comments                                                                                                                                 |
+| ---------- | ----------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| 4          | magic       | uint32    | Cette constante magique permet de différencier plusieurs réseaux différents. De plus, elle peut servir de séparateur entre les messages. |
+| 12         | type        | char[12]  | Une chaîne de caractères indiquant le type du message                                                                                    |
+| 4          | length      | uint32    | Taille de la `payload` en octets.                                                                                                        |
+| length     | payload     | char\[]   | Le message proprement dit.                                                                                                               |
 
 Le champ `magic` contient un nombre identifiant le réseau. Cela permet de s’assurer que le message est bien destiné à un nœud ENSICOIN. Ce nombre est donné dans le fichier [consensus.md](consensus.md).
 
-Le champ `type` indique le type du message. Par exemple `whoami` pour indiquer son identité.
+## Structures communes
 
-Le champ `timestamp` contient la date de création du message.
+Cette section décrit des structures qui sont communes à plusieurs types de messages.
 
-Finalement, le champ `message` contient le message en lui-même.
+### `address`
+
+Cette structure doit être utilisée quand l’adresse d’un nœud doit être partagée.
+
+| Field Size | Description | Data Type | Comments                                                                                                                                          |
+| ---------- | ----------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 4          | timestamp   | uint32    | Timestamp standard UNIX indiquant la dernière fois où ce nœud a été actif.                                                                        |
+| 16         | IPv6/4      | char[16]  | Une adresse IPv6. Pour transmettre une adresse IPv4, il faut utiliser [ce format](https://en.wikipedia.org/wiki/IPv6#IPv4-mapped_IPv6_addresses). |
+| 2          | port        | uint16    | Le port réseau.                                                                                                                                   |
+
+### Variable length integer (`var_int`)
+
+| Value                                    | Bytes Used | Format |
+| ---------------------------------------- | ---------- | ------ |
+| >= 0 && \<= 252                          | 1          | uint8  |
+| >= 253 && \<= 0xFFFF                     | 3          | uint16 |
+| >= 0x10000 && \<= 0xFFFFFFFF             | 5          | uint32 |
+| >= 0x100000000 && \<= 0xFFFFFFFFFFFFFFFF | 9          | uint64 |
+
+### Variable length string (`var_str`)
+
+| Field Size | Description | Data Type | Comments                             |
+| ---------- | ----------- | --------- | ------------------------------------ |
+| ?          | length      | var_int   | Longueur de la chaîne de caractères. |
+| ?          | string      | char\[]   | La chaîne de caractères.             |
+
+### `inv_vect`
+
+| Field Size | Description | Data Type | Comments                                       |
+| ---------- | ----------- | --------- | ---------------------------------------------- |
+| 4          | type        | uint32    | Type de l’objet de ce vecteur de l’inventaire. |
+| 32         | hash        | char[32]  | Hash de l’objet.                               |
+
+Le champ `type` peut pour le moment contenir deux valeurs :
+
+| Value | Name  | Description                          |
+| ----- | ----- | ------------------------------------ |
+| 0     | TX    | Le hash est celui d’une transaction. |
+| 1     | BLOCK | Le hash est celui d’un block.        |
 
 ## Messages de contrôles
 
 Ces messages servent à assurer le bon fonctionnement du réseau P2P.
 
-### `whoami`
+### `whoami` et `whoamiack`
 
 Lorsque qu’un client tente de se connecter à un nœud, il doit envoyer un message du type `whoami` :
 
-```json
-{
-	"version": 0,
-}
-```
+| Field Size | Description | Data Type | Comments                                               |
+| ---------- | ----------- | --------- | ------------------------------------------------------ |
+| 4          | version     | uint32    | Le numéro de version du protocole utilisé par le nœud. |
+| 8          | timestamp   | int64     | Un timestamp UNIX standard en secondes.                |
 
-Ce message permet à l’autre nœud de savoir qui est le nœud qui se connecte. L’autre nœud devra alors répondre avec le même message afin d’établir la connexion.
+Afin d’établir la connexion, les deux nœuds devront aussi échanger des messages de type `whoamiack`. Ce message ne possède pas de `payload`. Il suffit de définir `type` à `whoamiack`.
 
-Le champ `version` contient le numéro de version du protocole utilisé par le nœud.
+Voici le protocole utilisé lors de la connexion entre deux nœuds (un nœud local `L` se connecte à un nœud distant `R`):
 
-## Blocks et transactions
+    L -> R : Envoie un message whoami avec sa version.
+    R -> L : Répond avec un message whoami avec sa version.
+    R -> L : Envoie aussi un message de type whoamiack.
+    R :      Défini la version du protocole au minimum des deux.
+    L -> R : Envoie un message de type whoamiack.
+    L :      Défini la version du protocole au minimum des deux.
 
-Le partage de données (blocks / transactions) est géré par deux messages : `inv` et `getdata`.
+Cela permet de s’assurer que les deux nœuds vont communiquer correctement.
+
+### `getaddr` et `addr`
+
+Le message `addr` permet de donner des informations à propos de nœuds connus du réseau.
+
+| Field Size | Description | Data Type  | Comments                      |
+| ---------- | ----------- | ---------- | ----------------------------- |
+| 1+         | count       | var_int    | Nombre d’adresses du message. |
+| 22 \* ?    | addresses   | address\[] | Liste de nœuds.               |
+
+Le message `getaddr` permet de demander à un ordre nœud des informations sur les nœuds du réseaux que ce nœud connait. En réponse à ce message, un message `addr` doit être envoyé. On considère qu’un nœud est vivant si on a reçu un message de lui il y a moins de trois heures. Passé ce délai, le nœud doit être oublié et ne doit donc pas être partagé.
+
+Ce message ne contient aucun champ particulier.
+
+## Blocs et transactions
+
+Le partage de données (blocks / transactions) est géré par deux messages : `inv` et `getdata`.
 
 Le message de type `inv` permet de transmettre les identifants de certaines ressources. Cela évite de transmettre les ressources complètes, ce qui serait trop lourd pour le réseau.
 
 Le message de type `getdata` est en principe utilisé suite à la réception d’un message de type `inv`. Si l’une des ressources de ce message `inv` n’est pas connue, alors il faudra utiliser un message `getdata` pour récupérer la ressource complète.
 
-Deux messages renvoient des messages `inv` :
+Deux messages renvoient des messages `inv` :
 
 - `getblocks`
 - `getmempool`
@@ -60,68 +115,90 @@ Ces messages sont décrits plus bas.
 
 ### `inv`
 
-
-```json
-{
-	"type": "b/t",
-	"hashes": [],
-}
-```
-
-Le champ `type` indique le type de ressource d’un message `inv` (`b` pour blocks ou `t` pour transactions).
-
-Le champ `hashes` contient les identifiants des ressources (le hash de header d’un block, ou celui d’une transaction).
-
+| Field Size | Description | Data Type   | Comments                            |
+| ---------- | ----------- | ----------- | ----------------------------------- |
+| ?          | count       | uint32      | Nombre d’entrées dans l’inventaire. |
+| 36 \* ?    | inventory   | inv_vect\[] | Vecteurs de l’inventaire.           |
 
 ### `getdata`
 
-Le message `getdata` demande à un nœud des données (blocks ou transactions). Ce message contient un message de type `inv`.
+Le message `getdata` demande à un nœud des données (blocks ou transactions). Ce message contient les mêmes champs qu’un message de type `inv`.
 
-```json
-{
-	"inv": {}
-}
-```
-
-Le champs `inv` contient un message de type `inv`. Cela permet de très facilement répondre à un message de type `inv`.
+Ce message est généralement envoyé en réponse à un message de type `inv`.
 
 En réponse à ce message, un ou plusieurs messages du type `block`, `transaction` ou encore `notfound` peuvent être envoyés.
 
 ### `notfound`
 
-Ce message est envoyé suite à un message `getdata`. Il indique qu’une ressource n’est pas connue par le nœud.
+Ce message est envoyé suite à un message `getdata`. Il contient les mêmes champs qu’un message de type `inv`. Il indique que certaines ressources sont inconnues de ce nœud.
 
-```json
-{
-	"type": "b/t",
-	"hash": ""
-}
-```
-
-Comme pour le message de type `inv`, il contient le type de la ressource et son identifiant.
+Il est envoyé en réponse à un message de type `getdata`.
 
 ### `block`
 
-Ce message est décrit dans [blocks.md](blocs.md).
+Ce message est envoyé en réponse d’un `getdata`, il représente un bloc. Pour avoir plus de détails sur les blocs, veuillez lire (ce fichier)[validation.md].
 
-### `transaction`
+| Field Size | Description | Data type  | Comments                                                           |
+| ---------- | ----------- | ---------- | ------------------------------------------------------------------ |
+| 4          | version     | uint32     | La version de la transaction.                                      |
+| 1+         | flags_count | var_int    | Nombre de drapeaux.                                                |
+| ?          | flags       | var_str\[] | Liste des drapeaux.                                                |
+| 32         | prev_block  | char[32]   | Le hash du block précédent.                                        |
+| 32         | merkle_root | char[32]   | Le hash de l’arbre de Merkle des transactions.                     |
+| 4          | timestamp   | uint32     | Un timestamp standard UNIX correspondant à la création de ce bloc. |
+| 4          | bits        | uint32     | Le target utilisé pour calculer ce bloc.                           |
+| 4          | nonce       | uint32     | Le nonce utilisé pour générer ce bloc.                             |
+| 1+         | txs_count   | var_int    | Le nombre de transactions du bloc.                                 |
+| ?          | txs         | tx\[]      | La liste des transactions du bloc.                                 |
 
-Ce message est décrit dans [transactions.md](transactions.md).
+### `tx`
+
+Ce message est envoyé en réponse d’un `getdata`, il représente une transaction. Pour avoir plus de détails sur les transactions, veuillez lire (ce fichier)[validation.md].
+
+| Field Size | Description   | Data type  | Comments                             |
+| ---------- | ------------- | ---------- | ------------------------------------ |
+| 4          | version       | uint32     | La version de la transaction.        |
+| 1+         | flags_count   | var_int    | Nombre de drapeaux.                  |
+| ?          | flags         | var_str\[] | Liste des drapeaux.                  |
+| 1+         | inputs_count  | var_int    | Nombre d’entrées de la transaction.  |
+| 37+        | inputs        | tx_in\[]   | Liste des entrées de la transaction. |
+| 1+         | outputs_count | var_int    | Nombre de sorties de la transaction. |
+| 9+         | outputs_count | tx_out\[]  | Liste des sorties de la transaction. |
+
+Une `tx_in` suit ce format :
+
+| Field Size | Description     | Data type | Comments                                          |
+| ---------- | --------------- | --------- | ------------------------------------------------- |
+| 36         | previous_output | outpoint  | Pointeur vers la sortie que dépense cette entrée. |
+| 1+         | script length   | var_int   | La taille du script.                              |
+| ?          | script          | uchar\[]  | Le script en lui-même.                            |
+
+Un `outpoint` suit ce format :
+
+| Field Size | Description | Data type | Comments                           |
+| ---------- | ----------- | --------- | ---------------------------------- |
+| 32         | hash        | char[32]  | Le hash de transaction référencée. |
+| 4          | index       | uint32    | L’index de la sortie référencée.   |
+
+Une `tx_out` suit ce format :
+
+| Field Size | Description   | Data type | Comments                |
+| ---------- | ------------- | --------- | ----------------------- |
+| 8          | value         | uint64    | La valeur de la sortie. |
+| 1+         | script length | var_int   | La taille du script.    |
+| ?          | script        | uchar\[]  | Le script en lui-même.  |
 
 ### `getblocks`
 
 Ce message est utilisé par un nœud pour demander un message de type `inv`. Il permet de récupérer les identifiants des blocks à partir d’un certain point dans la blockchain. Il est par exemple utilisé lors de la première connexion d’un nœud.
 
-```json
-{
-	"hashes": [],
-	"stopHash": ""
-}
-```
+| Field Size | Description          | Data Type  | Comments                                                               |
+| ---------- | -------------------- | ---------- | ---------------------------------------------------------------------- |
+| 4          | count                | uint32     | Nombre de hashs dans le champ `block locator`.                         |
+| 32 \* ?    | block locator object | char[32][] | Liste de hashs partant du block le plus haut vers le genesis block.    |
+| 32         | hash_stop            | char[32]   | Hash du dernier block désiré. Définir à 0 pour ne pas fixer de limite. |
 
-Le champ `hashes` contient un tableau d’identifiants de blocs, triés du plus haut au plus bas. L’idée est que le nœud recevant ce message répondra à partir du hash le plus grand qu’il connaît. Plus clairement, le but est de trouver le dernier block commun entre les deux nœuds. Si jamais le nœud recevant ne connait aucun des identifiants, alors il répondra à partir du genesis block, c’est-à-dire le premier block de la blockchain.
-
-Le champ `stopHash` indique à quel block arrêter de répondre (compris). Si ce champs est vide, TOUS les blocks connus devront être envoyés.
+Lorsqu’un nœud reçoit ce message, il doit parcourir le block locator jusqu’au premier hash connu. Ensuite, il doit envoyer un message de type `inv` contenant une liste de blocks qui commence juste après ce hash, et qui se termine à `hash_stop` ou au dernier block connu.
 
 ### `getmempool`
 
@@ -129,29 +206,4 @@ Ce message est utilisé par un nœud pour récupérer l’ensemble des transacti
 
 Comme pour `getblocks`, la réponse de ce message est un message de type `inv`.
 
-```json
-{}
-```
-
 Ce message ne contient aucun champ particulier.
-
-## Exemples
-
-Nous en avons terminé avec les messages. Voici maintenant quelques exemple d’échanges entre des nœuds.
-
-### Nouvelle connexion d’un nœud
-
-1. Le nouveau nœud envoie un message `whoami` à un autre nœud.
-2. Cet autre nœud répond avec un message `whoami`. La connexion est établie.
-3. Le nouveau nœud envoie un message `getblocks` vide à ce nœud pour effectuer sa première synchronisation.
-4. Celui-ci répond avec un message `inv` contenant la liste des hashs de tous les blocks de la blockchain.
-5. Le nouveau nœùd répond avec un message `getdata` contenant le message `inv` précédent.
-6. L’autre nœud va répondre avec de nombreux messages `block`.
-7. Le nouveau nœud peut aussi envoyer un message `getmempool` pour remplir sa mempool.
-
-### Un mineur trouve un block
-
-1. Le mineur utilise son nœud pour envoyer un message de type `block` à ses voisins.
-2. Ses voisins vérifient le block, puis envoient à leurs voisins un message de type `inv` contenant l’identifiant de ce nouveau block.
-3. Ces autres nœuds vont vérifier qu’ils ne connaissent pas déjà cet identifiant, puis demander aux émetteurs de ces messages `inv` le contenu du block en lui-même à l’aide du message `getdata`.
-4. Et ainsi de suite jusqu’à que le block soit propagé.
