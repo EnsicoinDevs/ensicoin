@@ -14,7 +14,7 @@ Sur le réseau, les scripts doivent être compilés en utilisant le format décr
 
 Voici la liste des mots-clés du langage de l’ENSICOIN :
 
-### Constantes
+### Constantes
 
 | Word     | Opcode | Hex     | Description                                                           |
 | -------- | ------ | ------- | --------------------------------------------------------------------- |
