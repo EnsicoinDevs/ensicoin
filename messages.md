@@ -2,7 +2,7 @@
 
 Ce document décrit les différents messages échangés entre les nœuds.
 
-Tous les entiers sont stockés en Big Endian.
+Tous les entiers sont stockés en [Big Endian](https://en.wikipedia.org/wiki/Endianness).
 
 ## Header d’un message
 
