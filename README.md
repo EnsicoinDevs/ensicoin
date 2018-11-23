@@ -14,6 +14,8 @@ Les règles de validation sont décrites ici : [validation](validation.md).
 
 Finalement, les scripts sont détaillés ici : [scripts](scripts.md).
 
+Un protocole de découverte du réseau utilisant Discord est défini ici : [découverte des nœuds](decouverte_nœuds.md).
+
 Un guide d’implémentation : [guide](guide.md).
 
 Le glossaire : [glossaire](glossaire.md).
