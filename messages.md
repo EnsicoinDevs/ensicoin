@@ -12,7 +12,7 @@ Un message doit toujours commencer par cette structure :
 | ---------- | ----------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | 4          | magic       | uint32    | Cette constante magique permet de différencier plusieurs réseaux différents. De plus, elle peut servir de séparateur entre les messages. |
 | 12         | type        | char[12]  | Une chaîne de caractères indiquant le type du message                                                                                    |
-| 4          | length      | var_uint  | Taille de la `payload` en octets.                                                                                                        |
+| 1+         | length      | var_uint  | Taille de la `payload` en octets.                                                                                                        |
 | length     | payload     | char\[]   | Le message proprement dit.                                                                                                               |
 
 Le champ `magic` contient un nombre identifiant le réseau. Cela permet de s’assurer que le message est bien destiné à un nœud ENSICOIN. Ce nombre est donné dans le fichier [consensus.md](consensus.md).
@@ -27,7 +27,7 @@ Cette structure doit être utilisée quand l’adresse d’un nœud doit être p
 
 | Field Size | Description | Data Type | Comments                                                                                                                                          |
 | ---------- | ----------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 4          | timestamp   | uint64    | Timestamp standard UNIX indiquant la dernière fois où ce nœud a été actif.                                                                        |
+| 8          | timestamp   | uint64    | Timestamp standard UNIX indiquant la dernière fois où ce nœud a été actif.                                                                        |
 | 16         | IPv6/4      | char[16]  | Une adresse IPv6. Pour transmettre une adresse IPv4, il faut utiliser [ce format](https://en.wikipedia.org/wiki/IPv6#IPv4-mapped_IPv6_addresses). |
 | 2          | port        | uint16    | Le port réseau.                                                                                                                                   |
 
@@ -44,8 +44,8 @@ Cette structure doit être utilisée quand l’adresse d’un nœud doit être p
 
 | Field Size | Description | Data Type | Comments                             |
 | ---------- | ----------- | --------- | ------------------------------------ |
-| ?          | length      | var_uint  | Longueur de la chaîne de caractères. |
-| ?          | string      | char\[]   | La chaîne de caractères.             |
+| 1+         | length      | var_uint  | Longueur de la chaîne de caractères. |
+| length     | string      | char\[]   | La chaîne de caractères.             |
 
 ### `inv_vect`
 
@@ -117,10 +117,10 @@ Ces messages sont décrits plus bas.
 
 ### `inv`
 
-| Field Size | Description | Data Type   | Comments                            |
-| ---------- | ----------- | ----------- | ----------------------------------- |
-| ?          | count       | var_uint    | Nombre d’entrées dans l’inventaire. |
-| 36 \* ?    | inventory   | inv_vect\[] | Vecteurs de l’inventaire.           |
+| Field Size  | Description | Data Type   | Comments                            |
+| ----------- | ----------- | ----------- | ----------------------------------- |
+| 1+          | count       | var_uint    | Nombre d’entrées dans l’inventaire. |
+| 36 \* count | inventory   | inv_vect\[] | Vecteurs de l’inventaire.           |
 
 ### `getdata`
 
@@ -196,7 +196,7 @@ Ce message est utilisé par un nœud pour demander un message de type `inv`. Il 
 
 | Field Size | Description          | Data Type  | Comments                                                               |
 | ---------- | -------------------- | ---------- | ---------------------------------------------------------------------- |
-| 4          | count                | var_uint   | Nombre de hashs dans le champ `block locator`.                         |
+| 1+         | count                | var_uint   | Nombre de hashs dans le champ `block locator`.                         |
 | 32 \* ?    | block locator object | char[32][] | Liste de hashs partant du block le plus haut vers le genesis block.    |
 | 32         | hash_stop            | char[32]   | Hash du dernier block désiré. Définir à 0 pour ne pas fixer de limite. |
 
