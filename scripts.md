@@ -16,11 +16,11 @@ Voici la liste des mots-clés du langage de l’ENSICOIN :
 
 ### Constantes
 
-| Word         | Opcode | Hex     | Description                                                                 |
-| ------------ | ------ | ------- | --------------------------------------------------------------------------- |
-| OP_FALSE     | 0      | 00      | Pousse le nombre 0 en haut de la pile.                                      |
-| N/A          | 1 - 75 | 01 - 4b | Les _opcodes_ octets suivants doivent être placés en haut de la pile.       |
-| OP_TRUE      | 80     | 50      | Pousse le nombre 1 en haut de la pile.                                      |
+| Word     | Opcode | Hex     | Description                                                           |
+| -------- | ------ | ------- | --------------------------------------------------------------------- |
+| OP_FALSE | 0      | 00      | Pousse le nombre 0 en haut de la pile.                                |
+| N/A      | 1 - 75 | 01 - 4b | Les _opcodes_ octets suivants doivent être placés en haut de la pile. |
+| OP_TRUE  | 80     | 50      | Pousse le nombre 1 en haut de la pile.                                |
 
 ### Gestion de la pile
 
