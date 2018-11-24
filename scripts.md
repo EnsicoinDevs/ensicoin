@@ -20,9 +20,6 @@ Voici la liste des mots-clés du langage de l’ENSICOIN :
 | ------------ | ------ | ------- | --------------------------------------------------------------------------- |
 | OP_FALSE     | 0      | 00      | Pousse le nombre 0 en haut de la pile.                                      |
 | N/A          | 1 - 75 | 01 - 4b | Les _opcodes_ octets suivants doivent être placés en haut de la pile.       |
-| OP_PUSHDATA1 | 76     | 4c      | Le prochain octet contient le nombre d’octets à pousser en haut de la pile. |
-| OP_PUSHDATA2 | 77     | 4d      | Identique à `OP_PUSHDATA1` mais sur deux octets.                            |
-| OP_PUSHDATA4 | 78     | 4e      | Identique à `OP_PUSHDATA1` mais sur quatre octets.                          |
 | OP_TRUE      | 80     | 50      | Pousse le nombre 1 en haut de la pile.                                      |
 
 ### Gestion de la pile
