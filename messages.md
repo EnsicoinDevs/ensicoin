@@ -147,7 +147,8 @@ Ce message est envoyé en réponse d’un `getdata`, il représente un bloc. Pou
 | ?          | flags       | var_str\[] | Liste des drapeaux.                                                |
 | 32         | prev_block  | char[32]   | Le hash du block précédent.                                        |
 | 32         | merkle_root | char[32]   | Le hash de l’arbre de Merkle des transactions.                     |
-| 4          | timestamp   | uint64     | Un timestamp standard UNIX correspondant à la création de ce bloc. |
+| 8          | timestamp   | uint64     | Un timestamp standard UNIX correspondant à la création de ce bloc. |
+| 4          | height      | uint32     | La hauteur du bloc.                                                |
 | 4          | bits        | uint32     | Le target utilisé pour calculer ce bloc.                           |
 | 4          | nonce       | uint32     | Le nonce utilisé pour générer ce bloc.                             |
 | 1+         | txs_count   | var_uint   | Le nombre de transactions du bloc.                                 |
