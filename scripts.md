@@ -38,14 +38,36 @@ Voici la liste des mots-clés du langage de l’ENSICOIN :
 
 | Word      | Opcode | Hex | Description                                                                                                          |
 | --------- | ------ | --- | -------------------------------------------------------------------------------------------------------------------- |
-| OP_VERIFY | 140    | 8c  | Marque la transaction comme invalide si le haut de la pile est à faux (`OP_FALSE`), enlève le haut de la pile sinon. |
+| OP_VERIFY | 140    | 8c  | Marque la transaction comme invalide si le haut de la pile est à faux (résultat de l’opération `OP_FALSE`), enlève le haut de la pile sinon. |
 
 ### Crypto
 
 | Word        | Opcode | Hex | Description                                                                                                                                                                                                                           |
 | ----------- | ------ | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | OP_HASH160  | 160    | a0  | Hash le haut de la pile avec RIPEMD-160.                                                                                                                                                                                              |
-| OP_CHECKSIG | 170    | aa  | Utilise la clé publique qui est en haut de la pile pour vérifier que la signature située juste en-dessous est valide. Enlève ces deux valeurs de la pile. Retourne 1 (`OP_TRUE`) si la signature est valide, et 0 (`OP_FALSE`) sinon. |
+| OP_CHECKSIG | 170    | aa  | Utilise la clé publique qui est en haut de la pile pour vérifier que la signature située juste en-dessous est valide. Enlève ces deux valeurs de la pile. Agit comme `OP_TRUE` si la signature est valide, et `OP_FALSE` sinon. |
+
+## Validation
+
+Un script doit être considéré comme **invalide** s’il contient une clé publique qui n’est pas sous une forme compressée.
+
+Ainsi, une clé publique DOIT commencer par `0x02` ou `0x03`, et la taille totale doit être de 33 octets.
+
+## Signature
+
+Pour calculer la signature d’une entrée, il faut tout d’abord calculer le double hash SHA-256 de la structure suivante :
+
+1. `version`
+2. `flags_count` puis `flags`
+3. le double hash de tous les outpoints des entrées de la transaction
+4. l’outpoint de l’entrée actuelle
+5. l’entrée actuelle moins le script
+6. la valeur de la sortie dépensée par cette entrée
+7. le hash de toutes les sorties de la transaction
+
+On nomme ce double hash le `shash` (signature hash).
+
+Il convient ensuite de signer ce shash puis de l’intégrer dans le script de l’entrée.
 
 ## Exemple
 
