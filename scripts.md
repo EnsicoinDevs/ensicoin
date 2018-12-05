@@ -36,15 +36,15 @@ Voici la liste des mots-clés du langage de l’ENSICOIN :
 
 ### Contrôle du flot
 
-| Word      | Opcode | Hex | Description                                                                                                          |
-| --------- | ------ | --- | -------------------------------------------------------------------------------------------------------------------- |
+| Word      | Opcode | Hex | Description                                                                                                                                  |
+| --------- | ------ | --- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | OP_VERIFY | 140    | 8c  | Marque la transaction comme invalide si le haut de la pile est à faux (résultat de l’opération `OP_FALSE`), enlève le haut de la pile sinon. |
 
 ### Crypto
 
-| Word        | Opcode | Hex | Description                                                                                                                                                                                                                           |
-| ----------- | ------ | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| OP_HASH160  | 160    | a0  | Hash le haut de la pile avec RIPEMD-160.                                                                                                                                                                                              |
+| Word        | Opcode | Hex | Description                                                                                                                                                                                                                     |
+| ----------- | ------ | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| OP_HASH160  | 160    | a0  | Hash le haut de la pile avec RIPEMD-160.                                                                                                                                                                                        |
 | OP_CHECKSIG | 170    | aa  | Utilise la clé publique qui est en haut de la pile pour vérifier que la signature située juste en-dessous est valide. Enlève ces deux valeurs de la pile. Agit comme `OP_TRUE` si la signature est valide, et `OP_FALSE` sinon. |
 
 ## Validation
