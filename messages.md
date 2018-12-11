@@ -166,7 +166,7 @@ Ce message est envoyé en réponse d’un `getdata`, il représente une transact
 | 1+         | inputs_count  | var_uint   | Nombre d’entrées de la transaction.  |
 | 37+        | inputs        | tx_in\[]   | Liste des entrées de la transaction. |
 | 1+         | outputs_count | var_uint   | Nombre de sorties de la transaction. |
-| 9+         | outputs_count | tx_out\[]  | Liste des sorties de la transaction. |
+| 9+         | outputs | tx_out\[]  | Liste des sorties de la transaction. |
 
 Une `tx_in` suit ce format :
 
