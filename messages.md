@@ -12,7 +12,7 @@ Un message doit toujours commencer par cette structure :
 | ---------- | ----------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | 4          | magic       | uint32    | Cette constante magique permet de différencier plusieurs réseaux différents. De plus, elle peut servir de séparateur entre les messages. |
 | 12         | type        | char[12]  | Une chaîne de caractères indiquant le type du message                                                                                    |
-| 1+         | length      | uint64  | Taille de la `payload` en octets.                                                                                                        |
+| 8          | length      | uint64    | Taille de la `payload` en octets.                                                                                                        |
 | length     | payload     | char\[]   | Le message proprement dit.                                                                                                               |
 
 Le champ `magic` contient un nombre identifiant le réseau. Cela permet de s’assurer que le message est bien destiné à un nœud ENSICOIN. Ce nombre est donné dans le fichier [consensus.md](consensus.md).
@@ -72,7 +72,7 @@ Lorsque qu’un client tente de se connecter à un nœud, il doit envoyer un mes
 | Field Size | Description | Data Type | Comments                                               |
 | ---------- | ----------- | --------- | ------------------------------------------------------ |
 | 4          | version     | uint32    | Le numéro de version du protocole utilisé par le nœud. |
-| 8          | timestamp   | uint64    | Un timestamp UNIX standard en secondes.                |
+| 26         | from        | address   | L’adresse du nœud qui souhaite se connecter.           |
 
 Afin d’établir la connexion, les deux nœuds devront aussi échanger des messages de type `whoamiack`. Ce message ne possède pas de `payload`. Il suffit de définir `type` à `whoamiack`.
 
@@ -166,7 +166,7 @@ Ce message est envoyé en réponse d’un `getdata`, il représente une transact
 | 1+         | inputs_count  | var_uint   | Nombre d’entrées de la transaction.  |
 | 37+        | inputs        | tx_in\[]   | Liste des entrées de la transaction. |
 | 1+         | outputs_count | var_uint   | Nombre de sorties de la transaction. |
-| 9+         | outputs_count | tx_out\[]  | Liste des sorties de la transaction. |
+| 9+         | outputs | tx_out\[]  | Liste des sorties de la transaction. |
 
 Une `tx_in` suit ce format :
 
