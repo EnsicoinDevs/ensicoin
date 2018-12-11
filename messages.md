@@ -69,10 +69,12 @@ Ces messages servent à assurer le bon fonctionnement du réseau P2P.
 
 Lorsque qu’un client tente de se connecter à un nœud, il doit envoyer un message du type `whoami` :
 
-| Field Size | Description | Data Type | Comments                                               |
-| ---------- | ----------- | --------- | ------------------------------------------------------ |
-| 4          | version     | uint32    | Le numéro de version du protocole utilisé par le nœud. |
-| 26         | from        | address   | L’adresse du nœud qui souhaite se connecter.           |
+| Field Size | Description 	| Data Type | Comments                                               |
+| ---------- | ------------	| --------- | ------------------------------------------------------ |
+| 4          | version     	| uint32    | Le numéro de version du protocole utilisé par le nœud. |
+| 26         | from        	| address   | L’adresse du nœud qui souhaite se connecter.           |
+| ?			 | service_count| var_uint  | Le nombre de champs de service que le nœud fournit	 |
+| ?			 | services		| var_str\[]| Les services fournis par le nœud						 |
 
 Afin d’établir la connexion, les deux nœuds devront aussi échanger des messages de type `whoamiack`. Ce message ne possède pas de `payload`. Il suffit de définir `type` à `whoamiack`.
 
