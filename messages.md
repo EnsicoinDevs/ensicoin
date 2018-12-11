@@ -72,7 +72,7 @@ Lorsque qu’un client tente de se connecter à un nœud, il doit envoyer un mes
 | Field Size | Description | Data Type | Comments                                               |
 | ---------- | ----------- | --------- | ------------------------------------------------------ |
 | 4          | version     | uint32    | Le numéro de version du protocole utilisé par le nœud. |
-| 8          | timestamp   | uint64    | Un timestamp UNIX standard en secondes.                |
+| 26         | from        | address   | L’adresse du nœud qui souhaite se connecter.           |
 
 Afin d’établir la connexion, les deux nœuds devront aussi échanger des messages de type `whoamiack`. Ce message ne possède pas de `payload`. Il suffit de définir `type` à `whoamiack`.
 
