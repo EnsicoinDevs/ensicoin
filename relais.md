@@ -17,4 +17,4 @@ Ce message demande a un relais de notifier tout les noeuds connectés d'une tran
 | Field Size | Description | Data Type  | Comments
 |------------|-------------|------------|-------------------------
 | 32		 | hash		   | char[32]   | Hash de la transaction
-| ?			 | transaction | transaction| Transaction a envoyer
+| ?			 | transaction | tx			| Transaction a envoyer
