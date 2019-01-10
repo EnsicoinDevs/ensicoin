@@ -78,6 +78,8 @@ Lorsque qu’un client tente de se connecter à un nœud, il doit envoyer un mes
 
 Afin d’établir la connexion, les deux nœuds devront aussi échanger des messages de type `whoamiack`. Ce message ne possède pas de `payload`. Il suffit de définir `type` à `whoamiack`.
 
+Un noeud normal doit fournir le service `node` au minimum. Les autres services possibles sont `relay`.
+
 Voici le protocole utilisé lors de la connexion entre deux nœuds (un nœud local `L` se connecte à un nœud distant `R`):
 
     L -> R : Envoie un message whoami avec sa version.
