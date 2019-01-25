@@ -142,7 +142,7 @@ Il est envoyé en réponse à un message de type `getdata`.
 
 ### `block`
 
-Ce message est envoyé en réponse d’un `getdata`, il représente un bloc. Pour avoir plus de détails sur les blocs, veuillez lire (ce fichier)[validation.md].
+Ce message est envoyé en réponse d’un `getdata`, il représente un bloc. Pour avoir plus de détails sur les blocs, veuillez lire [ce fichier](validation.md).
 
 | Field Size | Description | Data type  | Comments                                                           |
 | ---------- | ----------- | ---------- | ------------------------------------------------------------------ |
@@ -160,7 +160,7 @@ Ce message est envoyé en réponse d’un `getdata`, il représente un bloc. Pou
 
 ### `tx`
 
-Ce message est envoyé en réponse d’un `getdata`, il représente une transaction. Pour avoir plus de détails sur les transactions, veuillez lire (ce fichier)[validation.md].
+Ce message est envoyé en réponse d’un `getdata`, il représente une transaction. Pour avoir plus de détails sur les transactions, veuillez lire [ce fichier](validation.md).
 
 | Field Size | Description   | Data type  | Comments                             |
 | ---------- | ------------- | ---------- | ------------------------------------ |
