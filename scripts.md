@@ -73,9 +73,9 @@ Il convient ensuite de signer ce shash puis de l’intégrer dans le script de l
 
 Ces mots-clés suffisent à réaliser une transaction basique de type P2PKH :
 
-Script de l’entrée : `OP_DUP OP_HASH160 <hash160(pubKey)> OP_EQUAL OP_VERIFY OP_CHECKSIG`
+Script de la sortie : `OP_DUP OP_HASH160 <hash160(pubKey)> OP_EQUAL OP_VERIFY OP_CHECKSIG`
 
-Script de la sortie : `<signature> <pubKey>`
+Script de l’entrée : `<signature> <pubKey>`
 
 Sous forme hexadécimale, on obtient par exemple :
 
