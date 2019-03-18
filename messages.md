@@ -104,6 +104,10 @@ Le message `getaddr` permet de demander à un ordre nœud des informations sur l
 
 Ce message ne contient aucun champ particulier.
 
+### `2plus2is4` et `minus1thats3`
+
+`2plus2is4` correspond en fait à un ping, et `minus1thats3` à un pong. Ces deux messages ne possèdent aucun champ particulier. Il est recommandé d’envoyé un `2plus2is4` toutes les 42 secondes et de s’assurer que les autres nœuds y répondent correctement.
+
 ## Blocs et transactions
 
 Le partage de données (blocks / transactions) est géré par deux messages : `inv` et `getdata`.
