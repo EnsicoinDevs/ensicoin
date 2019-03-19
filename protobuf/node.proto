@@ -1,16 +1,16 @@
 syntax = "proto3";
 
-import "types.proto"
+import "types.proto";
 
 enum Error {
     INVALID_DATA = 0;
 }
 
-message Response {
+message NodeResponse {
   Error error = 1;
 }
 
 service Node {
-  rpc PublishRawTx(RawTx) returns (Response) {}
-  rpc PublishRawBlock(RawBlock) returns (Response) {}
+  rpc PublishRawTx(RawTx) returns (NodeResponse) {}
+  rpc PublishRawBlock(RawBlock) returns (NodeResponse) {}
 }

@@ -1,15 +1,15 @@
 syntax = "proto3";
 
-import "types.proto"
+import "types.proto";
 
 message MiningRequest {
   BlockTemplate template = 1;
   repeated Tx initial_pool = 2; 
 }
 
-message Response {}
+message MinerResponse {}
 
 service Miner {
-  rpc Mine(stream MiningResponse) returns (Response) {}
-  rpc AddTx(stream Tx) returns (Response) {}
+  rpc Mine(stream MiningRequest) returns (MinerResponse) {}
+  rpc AddTx(stream Tx) returns (MinerResponse) {}
 }
