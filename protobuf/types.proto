@@ -20,6 +20,11 @@ message Tx {
   repeated string flags = 2;
   repeated TxInput inputs = 3;
   repeated TxOutput outputs = 4;
+  string hash = 5;
+}
+
+message RawTx {
+  bytes raw = 1;
 }
 
 message Block {
@@ -31,6 +36,10 @@ message Block {
   uint32 height = 6;
   uint32 target = 7;
   repeated Tx txs = 8;
+}
+
+message RawBlock {
+  bytes raw = 1;
 }
 
 message BlockTemplate {

@@ -9,6 +9,6 @@ message Response {
 }
 
 service Node {
-  rpc PublishTx(Tx) returns (Response) {}
-  rpc PublishBlock(Block) returns (Response) {}
+  rpc PublishRawTx(RawTx) returns (Response) {}
+  rpc PublishRawBlock(RawBlock) returns (Response) {}
 }
