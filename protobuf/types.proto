@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package ensicoin_rpc;
+
 message Outpoint {
   bytes hash = 1;
   uint64 index = 2;

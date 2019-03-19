@@ -2,14 +2,16 @@ syntax = "proto3";
 
 import "types.proto";
 
+package ensicoin_rpc.miner;
+
 message MiningRequest {
   BlockTemplate template = 1;
   repeated Tx initial_pool = 2; 
 }
 
-message MinerResponse {}
+message Response {}
 
 service Miner {
-  rpc Mine(stream MiningRequest) returns (MinerResponse) {}
-  rpc AddTx(stream Tx) returns (MinerResponse) {}
+  rpc Mine(stream MiningRequest) returns (Response) {}
+  rpc AddTx(stream ensicoin_rpc.Tx) returns (Response) {}
 }
