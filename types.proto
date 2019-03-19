@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+message Outpoint {
+  bytes hash = 1;
+  uint64 index = 2;
+}
+
+message TxInput {
+  Outpoint previous_output = 1;
+  bytes script = 2;
+}
+
+message TxOutput {
+  uint64 value = 1;
+  bytes script = 2;
+}
+
+message Tx {
+  uint32 version = 1;
+  repeated string flags = 2;
+  repeated TxInput inputs = 3;
+  repeated TxOutput outputs = 4;
+}
+
+message Block {
+  uint32 version = 1;
+  repeated string flags = 2;
+  bytes prev_block = 3;
+  bytes merkle_root = 4;
+  uint64 timestamp = 5;
+  uint32 height = 6;
+  uint32 target = 7;
+  repeated Tx txs = 8;
+}
+
+message BlockTemplate {
+  uint32 version = 1;
+  repeated string flags = 2;
+  bytes prev_block = 3;
+  uint64 timestamp = 4;
+  uint32 height = 5;
+  uint32 target = 6;
+}

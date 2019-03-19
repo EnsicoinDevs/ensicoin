@@ -1,0 +1,14 @@
+import "types.proto"
+
+enum Error {
+    INVALID_DATA = 0;
+}
+
+message Response {
+  Error error = 1;
+}
+
+service Node {
+  rpc PublishTx(Tx) returns (Response) {}
+  rpc PublishBlock(Block) returns (Response) {}
+}

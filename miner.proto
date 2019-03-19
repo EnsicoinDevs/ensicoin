@@ -1,0 +1,13 @@
+import "types.proto"
+
+message MiningRequest {
+  BlockTemplate template = 1;
+  repeated Tx initial_pool = 2; 
+}
+
+message Response {}
+
+service Miner {
+  rpc Mine(stream MiningResponse) returns (Response) {}
+  rpc AddTx(stream Tx) returns (Response) {}
+}
