@@ -150,7 +150,7 @@ Ce message est envoyé en réponse d’un `getdata`, il représente un bloc. Pou
 
 | Field Size | Description | Data type  | Comments                                                           |
 | ---------- | ----------- | ---------- | ------------------------------------------------------------------ |
-| 4          | version     | uint32     | La version de la transaction.                                      |
+| 4          | version     | uint32     | La version du block.                                      |
 | 1+         | flags_count | var_uint   | Nombre de drapeaux.                                                |
 | ?          | flags       | var_str\[] | Liste des drapeaux.                                                |
 | 32         | prev_block  | char[32]   | Le hash du block précédent.                                        |
