@@ -8,11 +8,32 @@ enum Error {
     INVALID_DATA = 0;
 }
 
-message Response {
+message Reply {
   Error error = 1;
 }
 
+message PublishRawTxRequest {
+  bytes raw_tx = 1;
+}
+
+message PublishRawBlockRequest {
+  bytes raw_block = 1;
+}
+
+message GetBlockTemplateRequest {}
+message GetBlockTemplateReply {
+  ensicoin_rpc.BlockTemplate template = 1;
+}
+
+message GetBestBlockHashRequest {}
+message GetBestBlockHashReply {
+  bytes hash = 1;
+}
+
+
 service Node {
-  rpc PublishRawTx(ensicoin_rpc.RawTx) returns (Response) {}
-  rpc PublishRawBlock(ensicoin_rpc.RawBlock) returns (Response) {}
+  rpc PublishRawTx(stream PublishRawTxRequest) returns (Reply) {}
+  rpc PublishRawBlock(stream PublishRawBlockRequest) returns (Reply) {}
+  rpc GetBlockTemplate(GetBlockTemplateRequest) returns (stream GetBlockTemplateReply) {}
+  rpc GetBestBlockHash(GetBestBlockHashRequest) returns (GetBestBlockHashReply) {}
 }
