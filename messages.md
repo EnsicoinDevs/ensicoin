@@ -4,7 +4,9 @@ Ce document décrit les différents messages échangés entre les nœuds.
 
 Tous les entiers sont stockés en [Big Endian](https://en.wikipedia.org/wiki/Endianness).
 
-## Header d’un message
+## Structure d'un message
+
+### Header d’un message
 
 Un message doit toujours commencer par cette structure :
 
@@ -13,9 +15,16 @@ Un message doit toujours commencer par cette structure :
 | 4          | magic       | uint32    | Cette constante magique permet de différencier plusieurs réseaux différents. De plus, elle peut servir de séparateur entre les messages. |
 | 12         | type        | char[12]  | Une chaîne de caractères indiquant le type du message                                                                                    |
 | 8          | length      | uint64    | Taille de la `payload` en octets.                                                                                                        |
-| length     | payload     | char\[]   | Le message proprement dit.                                                                                                               |
 
 Le champ `magic` contient un nombre identifiant le réseau. Cela permet de s’assurer que le message est bien destiné à un nœud ENSICOIN. Ce nombre est donné dans le fichier [consensus.md](consensus.md).
+
+### Contenu du message
+
+Juste à la suite du header vient ce qu'on appelle la `payload` : le message lui-même.
+
+| Field Size | Description | Data Type | Comments                                                                                                                                 |
+| ---------- | ----------- | --------- | ------------------------- |
+| length         | payload     | char[]    | Le message lui-même   |
 
 ## Structures communes
 
