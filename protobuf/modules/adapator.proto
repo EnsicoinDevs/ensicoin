@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+import "types.proto";
+package ensicoin_rpc.adapator;
+
+message TxNotifyRequest {}
+message TxNotifyReply {
+  ensicoin_rpc.Tx new = 1;
+}
+
+message BlockNotifyRequest {}
+message BlockNotifyReply {
+  ensicoin_rpc.Block new = 1;
+}
+
+service Adaptator {
+  // Notifier
+  rpc TxNotify(TxNotifyRequest) returns (stream TxNotifyReply);
+  rpc BlockNotify(BlockNotifyRequest) returns (stream BlockNotifyReply);
+}
