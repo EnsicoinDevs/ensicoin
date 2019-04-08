@@ -12,28 +12,52 @@ message Reply {
   Error error = 1;
 }
 
+message GetInfoRequest {}
+message GetInfoReply {
+  string implementation = 1;
+  uint32 protocol_version = 2;
+}
+
 message PublishRawTxRequest {
   bytes raw_tx = 1;
 }
+message PublishRawTxReply {}
 
 message PublishRawBlockRequest {
   bytes raw_block = 1;
 }
+message PublishRawBlockRequest {}
 
 message GetBlockTemplateRequest {}
 message GetBlockTemplateReply {
   ensicoin_rpc.BlockTemplate template = 1;
 }
 
-message GetBestBlockHashRequest {}
+message GetBestBlockHashRequest {
+  bytes hash = 1;
+}
 message GetBestBlockHashReply {
   bytes hash = 1;
 }
 
+message GetBlockByHashRequest {
+  bytes hash = 1;
+}
+message GetBlockByHashReply {
+  ensicoin_rpc.Block block = 1;
+}
+
+message GetTxByHashRequest {}
+message GetTxByHashReply {
+  ensicoin_rpc.Tx tx = 1;
+}
 
 service Node {
-  rpc PublishRawTx(stream PublishRawTxRequest) returns (Reply) {}
-  rpc PublishRawBlock(stream PublishRawBlockRequest) returns (Reply) {}
+  rpc GetInfo(stream GetInfoRequest) returns (GetInfoReply) {}
+  rpc PublishRawTx(stream PublishRawTxRequest) returns (PublishRawTxReply) {}
+  rpc PublishRawBlock(stream PublishRawBlockRequest) returns (PublishRawBlockReply) {}
   rpc GetBlockTemplate(GetBlockTemplateRequest) returns (stream GetBlockTemplateReply) {}
   rpc GetBestBlockHash(GetBestBlockHashRequest) returns (GetBestBlockHashReply) {}
+  rpc GetBlockByHash(GetBlockByHashRequest) returns (GetBlockByHashReply) {}
+  rpc GetTxByHash(GetTxByHashRequest) returns (GetTxByHashReply) {}
 }
