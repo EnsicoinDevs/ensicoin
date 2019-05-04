@@ -26,6 +26,18 @@ Maintenant, qu’est-ce que la difficulté dont on parle tant ? Il s’agit d�
 
 Pour avoir plus de détails sur calcul de cette mesure, vous pouvez lire cette page : https://en.bitcoin.it/wiki/Difficulty.
 
+## Travail
+
+En cas de conflit entre deux chaines, il faut choisir la chaîne avec le plus de travail. Le travail d’une chaîne est défini comme la somme des travails des blocs qui constituent cette chaine.
+
+Le travail d’un bloc est calculé ainsi :
+
+```
+block_work = max_target - block_target
+```
+
+Où `max_target` est une constante valant `2^256` et `block_target` l’objectif du bloc.
+
 ## Récompense et création des ENSICOIN
 
 La récompense des mineurs est mise à jour tous les 210000 blocks. Elle est calculée ainsi :
