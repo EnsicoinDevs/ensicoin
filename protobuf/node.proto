@@ -53,7 +53,7 @@ message GetTxByHashReply {
 }
 
 service Node {
-  rpc GetInfo(stream GetInfoRequest) returns (GetInfoReply) {}
+  rpc GetInfo(GetInfoRequest) returns (GetInfoReply) {}
   rpc PublishRawTx(stream PublishRawTxRequest) returns (PublishRawTxReply) {}
   rpc PublishRawBlock(stream PublishRawBlockRequest) returns (PublishRawBlockReply) {}
   rpc GetBlockTemplate(GetBlockTemplateRequest) returns (stream GetBlockTemplateReply) {}
