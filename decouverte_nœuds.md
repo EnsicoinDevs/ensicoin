@@ -6,7 +6,7 @@ Ce document présente une méthode utilisant IRC permettant de découvert des n�
 
 ## Principe
 
-L’idée est d’utiliser IRC pour découvrir les autres nœuds. Chaque nœud se connecte à un salon IRC et déféni son pseudo comme son adresse publique préfixée du nombre magique et d’un underscore (par exemple `422021_78.248.18.120:4224`). Il suffit alor de sélectionner un utilisateur au hasard dans le salon, et d’essayer de s’y connecter.
+L’idée est d’utiliser IRC pour découvrir les autres nœuds. Chaque nœud se connecte à un salon IRC et déféni son pseudo comme son adresse publique préfixée du nombre magique et d’un underscore (par exemple `422021_78.248.18.120:4224`). Il suffit alors de sélectionner un utilisateur au hasard dans le salon, et d’essayer de s’y connecter.
 
 ## Détails
 
