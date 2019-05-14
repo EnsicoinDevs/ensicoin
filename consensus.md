@@ -44,18 +44,18 @@ Le nombre magique du réseau principal est : `422021`.
 
 Le genesis block, c’est-à-dire le premier block de la blockchain principale de l’ENSICOIN est :
 
-| Champ     | Valeur 		 |
-|-----------|----------------|
-|version    |0       		 |
-|flags_count|1       		 |
-|flags      |"ici cest limag"|
-|prev_block |32*[0]          |
-|merkle_root|32*[0]          |
-|timestamp  |1566862920      |
-|height     |0               |
-|bits       |0x1e00f000      |
-|nonce      |42              |
-|txs_count  |0               |
-|txs        |-               |
+| Champ     | Valeur 		 						|
+|-----------|---------------------------------------|
+|version    |0       		 						|
+|flags_count|1       		 						|
+|flags      |"ici cest limag"						|
+|prev_block |32*[0]          						|
+|merkle_root|32*[0]          						|
+|timestamp  |1566862920      					   	|
+|height     |0               					   	|
+|target     |0x0000f0000000000000000000000000      	|
+|nonce      |42              					   	|
+|txs_count  |0               					   	|
+|txs        |-               					   	|
 
 Ce block est invalide, c’est pour cela qu’il est considéré comme une constante.
