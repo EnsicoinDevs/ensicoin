@@ -166,7 +166,7 @@ Ce message est envoyé en réponse d’un `getdata`, il représente un bloc. Pou
 | 32         | merkle_root | char[32]   | Le hash de l’arbre de Merkle des transactions.                     |
 | 8          | timestamp   | uint64     | Un timestamp standard UNIX correspondant à la création de ce bloc. |
 | 4          | height      | uint32     | La hauteur du bloc.                                                |
-| 4          | bits        | uint32     | Le target utilisé pour calculer ce bloc.                           |
+| 32         | target      | char[32]   | Le target utilisé pour calculer ce bloc.                           |
 | 8          | nonce       | uint64     | Le nonce utilisé pour générer ce bloc.                             |
 | 1+         | txs_count   | var_uint   | Le nombre de transactions du bloc.                                 |
 | ?          | txs         | tx\[]      | La liste des transactions du bloc.                                 |
