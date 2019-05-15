@@ -60,10 +60,9 @@ Pour calculer la signature d’une entrée, il faut tout d’abord calculer le d
 1. `version`
 2. `flags_count` puis `flags`
 3. le double hash de tous les outpoints des entrées de la transaction
-4. l’outpoint de l’entrée actuelle
-5. l’entrée actuelle moins le script
-6. la valeur de la sortie dépensée par cette entrée
-7. le hash de toutes les sorties de la transaction
+4. l’entrée actuelle moins le script
+5. la valeur de la sortie dépensée par cette entrée
+6. le hash de toutes les sorties de la transaction
 
 On nomme ce double hash le `shash` (signature hash).
 
