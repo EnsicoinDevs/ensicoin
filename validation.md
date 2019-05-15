@@ -85,17 +85,16 @@ Pour calculer la signature d’une transaction, il faut donc remplacer le script
 
 1. Vérifier le format général de la transaction.
 2. La transaction doit posséder au monis une entrée et une sortie.
-3. Les valeurs des sorties doivent être supérieures à 0.
-4. Vérifier que cette transaciton n’est pas une conibase, sauf si elle est au début d’un bloc.
-5. La somme des sorties doit être strictement inférieure à celle des entrées.
-6. Rejeter si on a déjà une transaction avec la même empreinte dans la chaîne princpale ou dans la piscine des transactions.
-7. Pour toutes les entrées, si la sortie référencée l’est déjà dans une entrée de la chaîne principale alors rejeter.
-8. Pour toutes les entrées, regarder dans la chaîne principale ou dans la piscine des transactions si la transaction référencée existe. Si ce n’est pas le cas, il s’agit d’une transaction orpheline. Il faut alors l’ajouter dans la liste des transactions orphelines sauf s’il y a déjà une transaction qui correspond à celle-ci dans cette liste.
-9. Pour toutes les entrées, si une des sorties reférencée est une coinbase, alors il faut vérifier qu’au moins 42 blocs sont passés depuis son bloc.
-10. Pour toutes les entrées, si la transaciton reférencée existe mais pas la sortie, alors rejeter.
-11. Vérifier les scripts des entrées.
-12. Ajouter à la piscine des transactions.
-13. Transmettre la transaction aux autres nœuds.
-14. Pour chaque transaction orpheline qui utilisent cette transaction, recommencer l’algorithme.
+3. Vérifier que cette transaciton n’est pas une coinbase, sauf si elle est au début d’un bloc.
+4. La somme des sorties doit être strictement inférieure à celle des entrées.
+5. Rejeter si on a déjà une transaction avec la même empreinte dans la chaîne princpale ou dans la piscine des transactions.
+6. Pour toutes les entrées, si la sortie référencée l’est déjà dans une entrée de la chaîne principale alors rejeter.
+7. Pour toutes les entrées, regarder dans la chaîne principale ou dans la piscine des transactions si la transaction référencée existe. Si ce n’est pas le cas, il s’agit d’une transaction orpheline. Il faut alors l’ajouter dans la liste des transactions orphelines sauf s’il y a déjà une transaction qui correspond à celle-ci dans cette liste.
+8. Pour toutes les entrées, si une des sorties reférencée est une coinbase, alors il faut vérifier qu’au moins 42 blocs sont passés depuis son bloc.
+9. Pour toutes les entrées, si la transaciton reférencée existe mais pas la sortie, alors rejeter.
+10. Vérifier les scripts des entrées.
+11. Ajouter à la piscine des transactions.
+12. Transmettre la transaction aux autres nœuds.
+13. Pour chaque transaction orpheline qui utilisent cette transaction, recommencer l’algorithme.
 
 Si la transaction est une coinbase, il convient de se référer à ce document [consensus.md](consensus.md), où des détails sont donnés sur la création des ENSICOIN.
