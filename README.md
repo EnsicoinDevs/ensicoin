@@ -20,9 +20,53 @@ Un guide d’implémentation : [guide](guide.md).
 
 Le glossaire : [glossaire](glossaire.md).
 
+## État du projet
+
+### Nœuds
+
+Voici un tableau récapitulant les fonctionnalités des implémentations connues :
+
+| Dépôt                                                              | Handshake          | Synchronisation    | Validation         | gRPC               |
+| ------------------------------------------------------------------ | ------------------ | ------------------ | ------------------ | ------------------ |
+| [eccd](https://github.com/EnsicoinDevs/eccd)                       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [arcd](https://github.com/EnsicoinDevs/arcd)                       | :heavy_check_mark: | :heavy_check_mark: | :x:                | :heavy_check_mark: |
+| [ensicoin-rust](https://github.com/EnsicoinDevs/ensicoin-rust)     | :heavy_check_mark: | :x:                | :x:                | :x:                |
+| [ensicoin-python](https://github.com/EnsicoinDevs/ensicoin-python) | :heavy_check_mark: | :x:                | :x:                | :x:                |
+| ensicoin-swift                                                     | :x:                | :x:                | :x:                | :x:                |
+
+### Contrôleurs (ctl)
+
+Pour administrer les nœuds, il est possible d’utiliser un de ces contrôleurs à partir du moment où le nœud supporte gRPC.
+
+| Dépôt                                              | UI  |
+| -------------------------------------------------- | --- |
+| [arc-cli](https://github.com/EnsicoinDevs/arc-cli) | TUI |parallélisé
+| [eccctl](https://github.com/EnsicoinDevs/eccctl)   | TUI |
+
+### Mineurs
+
+Les mineurs peuvent se connecter à un nœud qui supporte le gRPC afin de générer des blocs.
+
+| Dépôt                                                            | Parallélisé |
+| ---------------------------------------------------------------- | ----------- |
+| [ensicoin-simon](https://github.com/EnsicoinDevs/ensicoin-simon) | :x:         |
+
+### Wallets
+
+Les wallets permettent d’échanger des ensicoins.
+
+| Dépôt                                                      | Plate-forme |
+|------------------------------------------------------------|-------------|
+| [MaybeWallet](https://github.com/EnsicoinDevs/maybewallet) | Mobile      |
+
+### Utilitaires
+
+| Dépôt                                                                  | Fonction | Description          |
+| ---------------------------------------------------------------------- | -------- | -------------------- |
+| [ensicoin-explorer](https://github.com/EnsicoinDevs/ensicoin-explorer) | Explorer | Explorateur de blocs |
+
 ## Par où commencer ?
 
-Pour le moment, aucune implémentation n’est fonctionnelle. Vous pouvez commencer à un réaliser une. Pour cela, vous devez :
+Si vous souhaitez simplement utiliser l’Ensicoin, vous pouvez choisir un nœud ou un wallet dans les tableaux ci-dessus.
 
-- savoir comment une chaine de blocs fonctionne (par exemple celle de Bitcoin)
-- lire les documents ci-dessus, sauf peut-être le guide d’implémentation
+Si vous souhaitez participer au projet, n’hésitez pas à contacter l’un des développeurs.
