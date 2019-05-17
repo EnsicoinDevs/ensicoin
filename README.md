@@ -45,11 +45,12 @@ Pour administrer les nœuds, il est possible d’utiliser un de ces contrôleurs
 
 ### Mineurs
 
-Les mineurs peuvent se connecter à un nœud qui supporte le gRPC afin de générer des blocs.
+Les mineurs peuvent se connecter à un nœud afin de générer des blocs.
 
-| Dépôt                                                            | Parallélisé |
-| ---------------------------------------------------------------- | ----------- |
-| [ensicoin-simon](https://github.com/EnsicoinDevs/ensicoin-simon) | :x:         |
+| Dépôt                                                            | Parallélisé        | gRPC               |
+| ---------------------------------------------------------------- | ------------------ | ------------------ |
+| [ensicoin-simon](https://github.com/EnsicoinDevs/ensicoin-simon) | :x:                | :heavy_check_mark: |
+| [cuda-miner](https://github.com/EnsicoinDevs/cuda-miner)         | :heavy_check_mark: | :x:                |
 
 ### Wallets
 
