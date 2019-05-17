@@ -1,8 +1,8 @@
-# ENSICOIN
+# Ensicoin
 
-ENSICOIN est un projet à but éducatif. L’idée est de réaliser une crypto-monnaie simple, inspirée de Bitcoin, afin de mieux en comprendre le fonctionnement.
+Ensicoin est un projet à but éducatif. L’idée est de réaliser une crypto-monnaie simple, inspirée de Bitcoin, afin de mieux en comprendre le fonctionnement.
 
-Ce dépôt contient les détails du protocole de l’ENSICOIN. En théorie, les documents de ce dépôt devraient suffire pour créer un nœud capable d’interargir sans problèmes avec les autres nœuds.
+Ce dépôt contient les détails du protocole de l’Ensicoin. En théorie, les documents de ce dépôt devraient suffire pour créer un nœud capable d’interargir sans problèmes avec les autres nœuds.
 
 ## Documents
 
