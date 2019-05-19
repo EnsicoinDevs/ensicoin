@@ -6,7 +6,7 @@ Ce fichier explique comment valider les blocs et les transactions.
 
 ### Coinbase
 
-Un bloc est toujours constitué d’au moins une transaction. Cette transactio doit être une transaction de génération (coinbase), et doit toujours être au début de la liste des transactions. Cette transaction spéciale créer des Ensicoin comme récomponse pour le mineur. Finalement, cette transaction doit être unique au sein d’un bloc.
+Un bloc est toujours constitué d’au moins une transaction. Cette transaction doit être une transaction de génération (coinbase), et doit toujours être au début de la liste des transactions. Cette transaction spéciale créer des Ensicoin comme récomponse pour le mineur. Finalement, cette transaction doit être unique au sein d’un bloc.
 
 ### Chaînes
 
