@@ -58,7 +58,7 @@ Un bloc n’a pas besoin de signature car il ne peut pas être modifié : il fa
 
 ## Transactions
 
-Pour pouvoir valider une transaction, vous aurez aussi besoin de lire ce document : [script.md](script.md).
+Pour pouvoir valider une transaction, vous aurez aussi besoin de lire ce document : [scripts.md](scripts.md).
 
 ### La piscine des transactions ou « mempool »
 
