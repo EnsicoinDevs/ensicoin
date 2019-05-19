@@ -32,7 +32,7 @@ Voici un tableau récapitulant les fonctionnalités des implémentations connues
 | [arcd](https://github.com/EnsicoinDevs/arcd)                       | :heavy_check_mark: | :heavy_check_mark: | :x:                | :heavy_check_mark: |
 | [ensicoin-rust](https://github.com/EnsicoinDevs/ensicoin-rust)     | :heavy_check_mark: | :x:                | :x:                | :x:                |
 | [ensicoin-python](https://github.com/EnsicoinDevs/ensicoin-python) | :heavy_check_mark: | :x:                | :x:                | :x:                |
-| ensicoin-swift                                                     | :x:                | :x:                | :x:                | :x:                |
+| [ensicoin-swift](https://github.com/EnsicoinDevs/secd)             | :x:                | :x:                | :x:                | :x:                |
 
 ### Contrôleurs (ctl)
 
