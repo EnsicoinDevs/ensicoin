@@ -51,7 +51,7 @@ Le genesis block, c’est-à-dire le premier block de la blockchain principale d
 |flags      |"ici cest limag"						|
 |prev_block |32*[0]          						|
 |merkle_root|32*[0]          						|
-|timestamp  |1566862920      					   	|
+|timestamp  |1558540052      					   	|
 |height     |0               					   	|
 |target     |[0,0,0,0,0,0,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]    	|
 |nonce      |42              					   	|
