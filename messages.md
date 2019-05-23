@@ -171,6 +171,10 @@ Ce message est envoyé en réponse d’un `getdata`, il représente un bloc. Pou
 | 1+         | txs_count   | var_uint   | Le nombre de transactions du bloc.                                 |
 | ?          | txs         | tx\[]      | La liste des transactions du bloc.                                 |
 
+On définit des flags standard sur les blocs avec des clés: `"#key:value"`. Les clés standards sont:
+ - `miner` qui donne l'implémentation du mineur de ce bloc.
+ - `last_mined` donnant le nombre de blocs passés depuis le précédent bloc miné par le mineur.
+
 ### `tx`
 
 Ce message est envoyé en réponse d’un `getdata`, il représente une transaction. Pour avoir plus de détails sur les transactions, veuillez lire [ce fichier](validation.md).
