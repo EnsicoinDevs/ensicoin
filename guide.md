@@ -19,6 +19,8 @@ Un nœud complet est constitué des modules suivants :
 - Gestion du réseau et des messages
 - Gestion de la piscine des transactions (mempool)
 - Gestion de la blockchain
+- Gestion de la communication par [gRPC](https://grpc.io/) utilisant le [service standard](https://github.com/EnsicoinDevs/ensicoin-proto)
+- Bootstraping sur IRC
 
 Nous vous proposons de commencer par être capable de vous connecter à un autre nœud et d’échanger quelques messages. Cela simplifiera les tests par la suite, et sera motivant.
 
@@ -44,9 +46,13 @@ Vous vous rendrez compte plus tard que le fait de ne pas séparer les nœuds ent
 
 Afin de tester votre implémentation, vous pouvez tenter de vous connecter sur ce nœud : `78.248.188.120:4224`. Il attendra alors, comme convenu dans le protocole, un message `whoami` de votre part. Si vous envoyez ce message, il répondra avec un message `whoami`. Si vous arrivez jusqu’ici, alors votre implémentation est fonctionnelle.
 
-Pour tester le réseau dans l’autre sens, c’est-à-dire de l’extérieur vers votre nœud, demandez à quelqu’un dans une issue github ou sur le salon #ensicoin du serveur Discord de la promo 2021 de l’Ensimag de tenter de se connecter à votre nœud.
+Pour tester le réseau dans l’autre sens, c’est-à-dire de l’extérieur vers votre nœud, demandez à quelqu’un dans une issue github, sur le Discord ensicoin, ou sur le salon #ensicoin du serveur Discord de la promo 2021 de l’Ensimag de tenter de se connecter à votre nœud.
 
 Si votre nœud est fonctionnel dans les deux sens, félicitation.
+
+## Le Bootstraping : Comment trouver des amis ?
+
+Pour pouvoir decouvir d'autres pairs il faut déja être connecté à quelqu'un pour pouvoir demander d'autres adresse. C'est donc un peu circulaire, pour trouver d'autres pairs il être dans le réseau. Pour pallier ce problème il est défini un [protocole](decouverte_nœuds.md) sur IRC pour découvrir des nœuds. Chaque nœud publie son adresse en tant que son pseudo sur IRC. Il suffit alors de trouver un nœud et de lui envoyer un message `getaddr`.
 
 ## Le stockage
 
@@ -133,6 +139,11 @@ Ce dernier message est celui qui va permettre à votre nœud de ce synchroniser 
 
 Si vous être arrivé jusqu’ici, félicitation, votre nœud est fonctionnel ! \o/
 
+## Le protocole gRPC
+
+Avec les fonction définies [içi](https://github.com/EnsicoinDevs/ensicoin-proto), on peut faire communiquer des application externes avec son nœuds, comme un mineur ou un explorateur de blocs.
+Pour cela il suffit d'implementer les fonctions définies avec une bibliothèque pour son langage, un certain nombres sont listées [içi](https://packages.grpc.io/).
+
 ## Et ensuite ?
 
 Voici quelques idées de choses à faire ensuite :
@@ -142,4 +153,4 @@ Voici quelques idées de choses à faire ensuite :
 
 ## Trouver de l’aide
 
-Vous pouvez trouver de l’aide sur le serveur Discord de la promotion 2021 de l’Ensimag dans le salon #ensicoin, ou en ouvrant une nouvelle issue sur ce dépôt github.
+Vous pouvez trouver de l’aide sur le serveur Discord de la promotion 2021 de l’Ensimag dans le salon #ensicoin, sur le Discord ensicoin, ou en ouvrant une nouvelle issue sur ce dépôt github.
