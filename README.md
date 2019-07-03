@@ -26,14 +26,14 @@ Le glossaire : [glossaire](glossaire.md).
 
 Voici un tableau récapitulant les fonctionnalités des implémentations connues :
 
-| Dépôt                                                              | Handshake          | Synchronisation    | Validation         | gRPC               | Bootstrap IRC |
-| ------------------------------------------------------------------ | ------------------ | ------------------ | ------------------ | ------------------ | ------------- |
-| [eccd](https://github.com/EnsicoinDevs/eccd)                       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :x:           |
-| [arcd](https://github.com/EnsicoinDevs/arcd)                       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :x:           |
-| [ensicoin-rust](https://github.com/EnsicoinDevs/ensicoin-rust)     | :heavy_check_mark: | :x:                | :x:                | :x:                | :x:           |
-| [ensicoin-python](https://github.com/EnsicoinDevs/ensicoin-python) | :heavy_check_mark: | :x:                | :x:                | :x:                | :x:           |
-| [ensicoin-swift](https://github.com/EnsicoinDevs/secd)             | :x:                | :x:                | :x:                | :x:                | :x:           |
-| [ensicoin-js](https://github.com/valderane/ensicoin-js.git)        | :x:                | :x:                | :x:                | :x:                | :x:           |
+| Dépôt                                                              | Handshake          | Synchronisation    | Validation         | gRPC               | Propagation d'adresses | Bootstrap IRC     |
+| ------------------------------------------------------------------ | ------------------ | ------------------ | ------------------ | ------------------ | ---------------------- | ----------------- |
+| [eccd](https://github.com/EnsicoinDevs/eccd)                       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :x:           		  | :x:               |
+| [arcd](https://github.com/EnsicoinDevs/arcd)                       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :x:                    | :heavy_check_mark:|
+| [ensicoin-rust](https://github.com/EnsicoinDevs/ensicoin-rust)     | :heavy_check_mark: | :x:                | :x:                | :x:                | :x:                    | :x:               |
+| [ensicoin-python](https://github.com/EnsicoinDevs/ensicoin-python) | :heavy_check_mark: | :x:                | :x:                | :x:                | :x:                    | :x:               |
+| [ensicoin-swift](https://github.com/EnsicoinDevs/secd)             | :x:                | :x:                | :x:                | :x:                | :x:                    | :x:               |
+| [ensicoin-js](https://github.com/valderane/ensicoin-js.git)        | :x:                | :x:                | :x:                | :x:                | :x:                    | :x:               |
 
 
 
