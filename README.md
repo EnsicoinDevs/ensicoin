@@ -26,7 +26,7 @@ Le glossaire : [glossaire](glossaire.md).
 
 Voici un tableau récapitulant les fonctionnalités des implémentations connues :
 
-| Dépôt                                                              | Handshake          | Synchronisation    | Validation         | gRPC               | Propagation d'adresses | Bootstrap IRC     |
+| Dépôt                                                              | Handshake          | Synchronisation    | Validation         | gRPC               | Propagation d'adresses | Bootstrap Matrix  |
 | ------------------------------------------------------------------ | ------------------ | ------------------ | ------------------ | ------------------ | ---------------------- | ----------------- |
 | [eccd](https://github.com/EnsicoinDevs/eccd)                       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :x:           		  | :x:               |
 | [arcd](https://github.com/EnsicoinDevs/arcd)                       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :x:                    | :heavy_check_mark:|
