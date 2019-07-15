@@ -65,7 +65,7 @@ Le genesis block, c’est-à-dire le premier block de la blockchain principale d
 |merkle_root|32*[0]          						|
 |timestamp  |1558540052      					   	|
 |height     |0               					   	|
-|target     |[0,0,0,0,0,0,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]    	|
+|target     |[0,0,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]    	|
 |nonce      |42              					   	|
 |txs_count  |0               					   	|
 |txs        |-               					   	|
