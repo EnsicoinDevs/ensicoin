@@ -223,7 +223,7 @@ Ce message est utilisé par un nœud pour demander un message de type `inv`. Il 
 | 32 \* ?    | block locator object | char[32][] | Liste de hashs partant du block le plus haut vers le genesis block.    |
 | 32         | hash_stop            | char[32]   | Hash du dernier block désiré. Définir à 0 pour ne pas fixer de limite. |
 
-Lorsqu’un nœud reçoit ce message, il doit parcourir le block locator jusqu’au premier hash connu. Ensuite, il doit envoyer un message de type `inv` contenant une liste de blocks qui commence juste après ce hash, et qui se termine à `hash_stop` ou au dernier block connu.
+Lorsqu’un nœud reçoit ce message, il doit parcourir le block locator jusqu’au premier hash connu. Ensuite, il doit envoyer un message de type `inv` contenant une liste de blocks qui commence juste après ce hash, et qui se termine à `hash_stop`. Si `hash_stop` est défini à 0, il doit envoyer le plus de blocks possible dans la limite de 500 blocks. Pour obtenir la suite, il faudra envoyer un autre `getblocks`.
 
 ### `getmempool`
 
