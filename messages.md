@@ -217,13 +217,13 @@ Une `tx_out` suit ce format :
 
 Ce message est utilisé par un nœud pour demander un message de type `inv`. Il permet de récupérer les identifiants des blocks à partir d’un certain point dans la blockchain. Il est par exemple utilisé lors de la première connexion d’un nœud.
 
-| Field Size | Description          | Data Type  | Comments                                                               |
-| ---------- | -------------------- | ---------- | ---------------------------------------------------------------------- |
-| 1+         | count                | var_uint   | Nombre de hashs dans le champ `block locator`.                         |
-| 32 \* ?    | block locator object | char[32][] | Liste de hashs partant du block le plus haut vers le genesis block.    |
-| 32         | hash_stop            | char[32]   | Hash du dernier block désiré. Définir à 0 pour ne pas fixer de limite. |
+| Field Size | Description          | Data Type  | Comments                                                                |
+| ---------- | -------------------- | ---------- | ----------------------------------------------------------------------- |
+| 1+         | count                | var_uint   | Nombre de hashs dans le champ `block locator`.                          |
+| 32 \* ?    | block locator object | char[32][] | Liste de hashs partant du block le plus haut vers le genesis block.     |
+| 32         | hash_stop            | char[32]   | Hash du dernier block désiré. Définir à 0 pour aller jusqu’à la limite. |
 
-Lorsqu’un nœud reçoit ce message, il doit parcourir le block locator jusqu’au premier hash connu. Ensuite, il doit envoyer un message de type `inv` contenant une liste de blocks qui commence juste après ce hash, et qui se termine à `hash_stop`. Si `hash_stop` est défini à 0, il doit envoyer le plus de blocks possible dans la limite de 500 blocks. Pour obtenir la suite, il faudra envoyer un autre `getblocks`.
+Lorsqu’un nœud reçoit ce message, il doit parcourir le block locator jusqu’au premier hash connu. Ensuite, il doit envoyer un message de type `inv` contenant une liste de blocks qui commence juste après ce hash, et qui se termine à `hash_stop`. Ce message de type `inv` ne doit pas contenir plus de 500 hashs. Si `hash_stop` est défini à 0, il doit envoyer le plus de blocks possible (jusqu’à la fin de la chaîne principale ou de la limite des 500 hashs). Pour obtenir la suite, il faudra envoyer un autre `getblocks`.
 
 ### `getmempool`
 
