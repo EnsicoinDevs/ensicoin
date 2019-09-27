@@ -8,7 +8,7 @@ Dans un projet de blockchain réel, il faudrait choisir un langage efficace, pro
 
 Vous pouvez donc choisir n’importe quel langage, vraiment. Vous pouvez choisir un langage où vous êtes à l’aise, ou encore un langage que vous souhaitez apprendre.
 
-Dans la suite de ce guide, le langage python sera utilisé.
+Nous avons des implémentation en Python, Rust, Go, JS, C par exemple !
 
 ## Par où commencer ?
 
@@ -20,7 +20,7 @@ Un nœud complet est constitué des modules suivants :
 - Gestion de la piscine des transactions (mempool)
 - Gestion de la blockchain
 - Gestion de la communication par [gRPC](https://grpc.io/) utilisant le [service standard](https://github.com/EnsicoinDevs/ensicoin-proto)
-- Bootstraping sur IRC
+- Bootstraping (C'est pas encore tres bien defini)
 
 Nous vous proposons de commencer par être capable de vous connecter à un autre nœud et d’échanger quelques messages. Cela simplifiera les tests par la suite, et sera motivant.
 
@@ -34,23 +34,93 @@ Finalement, vous pourrez vous concentrer sur l’implémentation de la blockchai
 
 Le réseau est ici pair à pair. Cela signifie que votre nœud doit jouer à la fois le rôle d’un client et d’un serveur : il doit savoir accepter des connexions, et se connecter de lui-même à d’autres nœuds.
 
-Le protocole réseau utilisé et le TCP via des sockets. Il existe des librairies en python pour utiliser ce protocole.
+Le protocole réseau utilisé et le TCP via des sockets. Tout les langages possedent des bibliothèque pour utiliser celles ci. Une socket c'est quasiment comme un fichier sauf que l'on doit attendre pour lire son contenu, et on ecrit des octets bruts dedans.
 
-Ce guide est un bon point de départ : https://realpython.com/python-sockets/.
+Ce guide est un bon point de départ pour du python par exemple: https://realpython.com/python-sockets/.
 
-La difficulté principale ici est d’être capable de gérer à la fois les connexions entrantes et sortantes. Pour faire ça, nous vous conseillons de créer une classe `Peer` ou `Node` par exemple. Cette classe encapsulera la connexion socket, et permettra de gérer un nœud entrant de la même façon qu’un nœud sortant.
+On peut faciliment creer une socket en se connectant a quelqu’un, et on peut ecouter pour de nouvelles connections ce qui renvoie des sockets. Par exemple en python pour accepter de nouvelles connections on peut faire
+```python
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind((0.0.0.0, TCP_PORT))
+s.listen(1)
+ 
+while 1:
+	conn, addr = s.accept()
+	handle(conn, addr) # handle est la fonction qui va gerer tout ca
+```
 
-Bien sûr, il y a quelques différences entre les nœuds entrants et sortants : par exemple, c’est au nœud entrant d’envoyer le message `whoami` en premier. Vous pouvez simplement ajouter un booléen `is_ingoing` dans votre classe pour savoir si un nœud est entrant ou sortant.
+Si vous n'avez pas compris ce code, lisez la documentation ou copiez le, mais la premiere etape est plutot de savoir se connecter a un autre noeud !
 
-Vous vous rendrez compte plus tard que le fait de ne pas séparer les nœuds entrants des nœuds sortants dans votre implémentation va vous simplifier grandement le développement.
+Ainsi voici la fonction la plus simple qui permet de se connecter a un autre noeud !
+```python
+def connect(addr, port):
+	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	s.connect((addr, port))
+	return s
+```
 
-Afin de tester votre implémentation, vous pouvez tenter de vous connecter sur ce nœud : `78.248.188.120:4224`. Il attendra alors, comme convenu dans le protocole, un message `whoami` de votre part. Si vous envoyez ce message, il répondra avec un message `whoami`. Si vous arrivez jusqu’ici, alors votre implémentation est fonctionnelle.
+Vous pouvez essayer ca en utilisant un des noeuds connus (regardez a la fin du fichier c'est explique !) .... mais ne vous etonnez pas il ne va rien se passer.
 
-Pour tester le réseau dans l’autre sens, c’est-à-dire de l’extérieur vers votre nœud, demandez à quelqu’un dans une issue github, sur le Discord ensicoin, ou sur le salon #ensicoin du serveur Discord de la promo 2021 de l’Ensimag de tenter de se connecter à votre nœud.
+Pour qu'il se passe quelque chose il va falloir que vous puissiez envoyer des messages !
 
-Si votre nœud est fonctionnel dans les deux sens, félicitation.
+### Les messages
+
+Tout les messages sont definis a partir des types primitifs suivants: `uint16`, `uint32`, `uint64`, `char/uint8`, `var_uint`.
+
+Un bon point de depart c'est donc de convertir les types de votre langage en ces types, qui ne sont que des sequences de bits, et dans l'autre sens. Par exemple supposons que l'on ait un object python `bytes`
+```python
+def deserialize_uint16(raw_data):
+	return (raw_data[0] << 8) + raw_data[1]
+```
+(Pour ceux qui se demandent c'est du big-endian, et si vous avez pas compris cette phrase cela ne devrait pas vous poser de problème)
+
+On va pas vous ecrire tout le code, mais il faut faire de meme pour tout les types !
+
+Inversement on peut ecrire par exemple
+```python
+def serialize_uint64(num):
+	if num > 2**64:
+		num = 2**64 - 1
+	if num < 0:
+		num = 0
+	return num.to_bytes(8, byteorder='big')
+```
+
+Maintenant que l'on a tout ces blocs de base, on peut commencer a ecrire des fonctions qui creent des messages. Par exemple tout les message commencent par un header, defini par
+
+| Field Size | Description | Data Type | Comments                                                                                                                                 |
+| ---------- | ----------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| 4          | magic       | uint32    | Cette constante magique permet de différencier plusieurs réseaux différents. De plus, elle peut servir de séparateur entre les messages. |
+| 12         | type        | char[12]  | Une chaîne de caractères indiquant le type du message                                                                                    |
+| 8          | length      | uint64    | Taille de la `payload` en octets.                                                                                                        |
+
+Ceci est votre premier apercu de [messages.md](messages.md) qui sera votre ami pour un moment ! Ou pas.
+
+On voit alors que le premier element du header fait 4 octets, c'est un `uint32` il s'appelle magic et sa valeur est marquee dans [consensus.md](consensus.md). Et oui la doc ca fait ouvrir plein de fichiers. Vous pensiez qu'on etait pas organise ?
+
+La valeur suivante est une suite (un tableau) de 12 `char` qui donne le type du message. Il va y avoir beaucoup de tableau donc comprenez bien ce point. Et ensuite on a la longeure du message. Voici alors une fonction qui permet de creer un header a un message deja fabrique
+```python
+def create_header(magic, message_type, raw_message):
+	return serialize_uint32(magic) + serialize_type(message_type) + serialize_uint64(raw_message.len())
+```
+
+Les fonctions de creation de message permetent donc de creer les bytes a envoyer aux autres noeuds !
+
+Votre premiere mission est ainsi d'implementer le `whoami` et de voir ce qu'il se passe quand vous envoyez un `whoami` a un autre noeud. Si il ne se passe rien c'est que votre `whoami` n'est pas correct, ou que le noeud que vous avez contacte est casse (c'est fort possible aussi (deadlock hum hum, demandez a johyn)).
+
+Une fois que vous aurez implementer les messages `whoami` et `whoamiack` vous pouvez essayer de faire une connection complete a un noeud et il devrais vous envoyer un `getblocks`.
+
+Ensuite il va vous falloir implementer le protocole de ping: `2plus2is4` `minus1thats3`. Si on vous envoye le premier vous devez repondre avec le second (sinon par exemple mon noeud vous degage).
+
+Vous pouvez implementer la suite des messages tout de suite, ou attendre d'en avoir besoin c'est comme vous le sentez. Ne vous inquitez pas, rien que cette partie prends deja un temps certain quand on a jamais fait de programme en reseau. Et un conseil: rajoutez bien des fonctions qui vous permetent de voir tout les details des envois de message, et peut etre meme le contenu. Cela vous sera tres utile.
+
+Ensuite pour envoyer des message c'est aussi simple que `s.send(message_as_bytes)`. Il est conseille de faire une structure (`class` par exemple) autour de vos socket qui gere automatiquement les `whoami` et les ping. Et pensez au fonctions de debug ! vous en aurez besoin dans la suite !
+
+Vous etes maintenant prets a gerer des données !
 
 ## Le Bootstraping : Comment trouver des amis ?
+
+Faut que je le refasse mais flemme
 
 Pour pouvoir decouvir d'autres pairs il faut déja être connecté à quelqu'un pour pouvoir demander d'autres adresse. C'est donc un peu circulaire, pour trouver d'autres pairs il être dans le réseau. Pour pallier ce problème il est défini un [protocole](decouverte_nœuds.md) sur IRC pour découvrir des nœuds. Chaque nœud publie son adresse en tant que son pseudo sur IRC. Il suffit alors de trouver un nœud et de lui envoyer un message `getaddr`.
 
