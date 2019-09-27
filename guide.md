@@ -87,7 +87,6 @@ def serialize_uint64(num):
 ```
 
 Maintenant que l'on a tout ces blocs de base, on peut commencer a ecrire des fonctions qui creent des messages. Par exemple tout les message commencent par un header, defini par
-
 | Field Size | Description | Data Type | Comments                                                                                                                                 |
 | ---------- | ----------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | 4          | magic       | uint32    | Cette constante magique permet de différencier plusieurs réseaux différents. De plus, elle peut servir de séparateur entre les messages. |
