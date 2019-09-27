@@ -118,6 +118,8 @@ Ensuite pour envoyer des message c'est aussi simple que `s.send(message_as_bytes
 
 Vous etes maintenant prets a gerer des données !
 
+Avant de lire la suite il faudrait que vous lisiez au moins tout les messages, ca vous aideras a comprendre.
+
 ## Le Bootstraping : Comment trouver des amis ?
 
 Faut que je le refasse mais flemme
@@ -146,73 +148,65 @@ Comme vous pouvez le voir, cette structure de données est très pratique.
 
 Stocker les blocks directement dans la mémoire implique une perte des données si le nœud est relancé. Il faudra donc plus tard passer à une autre solution, comme des fichiers ou une base de données.
 
-## La propagation des transactions
+Un tres bon systeme de base de données c'est le K-V DB, key value database. C'est donc tres proche d'un dictionnaire.
 
-À cette étape du guide, vous devriez pouvoir :
+## La validation des ressources
 
-- Vous connecter à un nœud
-- Accepter une connexion d’un autre nœud
-- Recevoir et envoyer des messages `whoami` en suivant l’ordre défini dans le protocole
+Vous pouvez maintenant demander au gens leurs transactions et blocks ! Et voila vous etes prets a vous faire arnaquer par un mec qui depense votre argent. Attendez c'est pas ce que vous voulez ? Bah il faut donc vous assurer que tout le monde fait des operations valides. On va donc verifier tout cela !.
 
-Pour être capable de propager correctement des transactions, vous allez devoir implémenter (au moins en partie) les messages suivants :
+### Les `utxo`
 
-- `inv`
-- `getdata`
-- `notfound`
-- `transaction`
+Vous avez sans doute remarque que les entrées des transactions ne contiennent pas la valeur (sinon honte a vous, il fallait lire les messages !).
+En effet celle ci est contenue dans la sortie de la transaction dont on a le hash, on a juste a la trouver c'est ca ? Ouais bah quand la blockchain fera 100 GB chercher dans chaque bloc ca va vous prendre un certain temps.
 
-Vous pouvez aussi décider d’implémenter le message `getmempool`, mais c’est un plus à ce stade.
+La solution c'est de garder en memoire toutes les sorties qui ne sont pas encore depensees, les unspent transaction output (`utxo`). Ensuite quand vous voyez que quelqu’un depense de l'argent vous pouvez supprimer ces transactions de votre liste, et quand quelqu’un gagne de l'argent vous pouvez l'ajouter a cette liste. Le l'algorithme de validation est plus explique dans [validation](validation.md).
 
-Étant donné que vous n’êtes concernés que par les transactions, vous ne devez pas implémenter complètement les messages `inv` et `getdata`.
+### Les blocks
 
-Pour commencer, vous pouvez tenter de propager des transactions sans les valider. Concrètement, voilà le scénario que vous devez gérer dans ce cas :
+Apres etre capable de valider une tx, il faut pouvoir valider des blocs. Pour cela on commence par verifier quelques propriete sur le bloc puis on verifie chaque transaction. Et ensuite on supprime des utxos toutes les sorties references par le bloc. Mais tres vite il va arriver un problème....
 
-- Un nœud vous annonce des transactions (ou une seule) avec un message `inv`
-- Vous regardez dans votre mempool si vous connaissez déjà ou non cette transaction
-- Si vous ne la connaissez pas, vous envoyez un message `getdata` pour récupérer cette transaction
+## Recevoir des ressources
 
-En théorie, vous allez recevoir un peu plus tard un message de type `transaction` juste après.
+Comment on recois des ressources ? on les demande avec un `getdata` ! Souvent parceque on a recu un `inv` dont on ne connaisais pas certain hash. Une fois qu'on a recu la ressources on la valide comme decrit precedement, et on l'ajoute soit a la mempool si c'est une transcation, soit a la blockchain si c'est un bloc. Mais il y'a un probleme ici, la blockchain c'est la chaine avec le plus de travail sur laquelle tout le monde s'est accordee, mais pourquoi je stockerais un bloc qui n'est pas dans la main chain ?
 
-- Vous enregistrer cette transaction dans la mempool
-- Vous propagez cette transaction aux nœuds voisins en utilisant un message `inv`
+La raison est tres simple: il pourrait devenir la main chain si suffisament de blocs s'y rajoutent. Il faut donc en permanence stocker tout les blocs, au cas ou ils deviennent principaux. Le seul probleme est donc qu'il ne faut pas dire que ces blocs font gagner de l'argent, ils sont juste la au cas ou.
 
-Une fois que cette partie du protocole fonctionne, il devient important d’être capable de valider les transactions. C’est la prochaine chose que vous devriez réaliser, et c’est probablement la plus complexe.
+Gerer une chaine qui a le plus de travail s'apelle un fork et c'est probablement la partie la plus difficile de la blockchain.
 
-N’oubliez pas qu’une transaction peut arriver avant que l’une des transactions référencée dans ses entrées soit arrivée. Dans ce cas particulier, la transaction est dite « orpheline ». Vous ne devez cependant pas la marquer comme invalide, car vous recevrez peut-être la transaction manquante plus tard.
+Une idee pour gerer ca c'est d'avoir une map (dictionnaire) `(hash de block) -> (travail pour arriver jusque la)`, notons la `work`
+On peut alors mettre a jour grace a
+```python
+def update(new_block, work):
+	work[hash(new_block)] = work[previous_block(new_block)] + work_of_block(new_block)
+```
 
-## La blockchain
+Comme ca on peut stocker le travail maximal actuel `current_work` et si `work[hash(new_block)] > current_work` il va falloir forker la chaine.
 
-Si vous avez bien implémenté les étapes précédentes, cette étape ne devrait pas être particulièrement difficile à réaliser.
+Comment fait on pour forker la chaine ? On a donc deux branches, disons `A` (actuelle) et `N` (nouvelle). Il faut maintenant trouver le point commun entre `A` et `N`. Pour cela on peut deja remonter la plus haute branche des deux jusqua on soit sur deux blocks de meme hauteur sur `A` et sur `C`. Apres il suffit de faire
+```python
+def find_common(blockA, blockN):
+	while blockA != blockN:
+		blockA = previous_block(blockA)
+		blockN = previous_block(blockN)
+	return blockA # On a blockA == blockN
+```
 
-À cette étape du guide, vous devriez pouvoir :
+Si on remonte trop loin et qu'on descends dans les hauteurs negatives c'est que les deux chaines n'avaient pas le meme premier bloc. On appelle ce bloc le genesis hash, et il ne peut pas etre un bloc valide vu qu'il n'est precede par personne. Ce bloc est decrit dans [consensus](consensus.md).
 
-- Vous connecter à un nœud et accepter une connexion d’un autre nœud
-- Recevoir et envoyer des messages `whoami`, `inv`, `getdata`, `notfound` et `transaction`
-- Valider une transaction
+Quand on a trouve le point commun `blockCommun` il suffit d'annuler tout les blocs de `A` jusqu’a `blockCommun` et d'ajouter les blocks de `N` a partir de `blockCommun`. Et voila vous avez fait un fork ! Ca avait l'air simple ? Essayer d'implementer ca, y'a plein de details que j'ai passer sous le tapis.
 
-Afin de maintenir une blockchain, votre nœud devra supporter les messages suivants :
+## La propagation
 
-- `block`
-- `getblocks`
+Maintenant qu'on est capable de se mettre a l'etat le plus recent on devrais faire profiter les autres de cet etat. Du coup a chaque fois qu'on obtient des nouvelles ressources on doit envoyer un `inv` qui contient les hash de ces ressources a tout les noeuds auquels on est connectes pour leur demander si ils sont deja au courant, et si ils nous les demandent il faut les envoyer a l'aide de `block` ou `transaction`.
 
-En plus de ça, vous devrez terminer l’implémentation des messages `inv` et `getdata`.
-
-La validation des blocks étant plus simple à réaliser que celle des transactions, vous ne devriez pas reporter celle-ci à plus tard.
-
-Voici, dans l’ordre, ce que vous pouvez faire :
-
-- Terminer l’implémentation des messages `inv` et `getdata`
-- Implémenter le message `blocks` - Sauvegarder les blocks - Sauvegarder les blocks orphelins - Gérer correctement la chaîne la plus « longue », et donc les « forks »
-- Implémenter le message `getblocks`
-
-Ce dernier message est celui qui va permettre à votre nœud de ce synchroniser au réseau. Il est très important, et vous permettra aussi de tester votre nœud sur un autre nœud.
-
-Si vous être arrivé jusqu’ici, félicitation, votre nœud est fonctionnel ! \o/
+Il y'a un autre problème que je n'ai pas aborde: celui des ressources orphelines. En effet il se peut que une ressources se perde en route, ou qu'on nous envoye des ressources dans le mauvais ordre. Dans ce cas la on risque de refuser de valider quelques chose parceque on ne connait pas ses parents. Pour regler ceci on conseille de garder un petit registre des ressources orphelines et quand elle est orpheline depuis trop longtemps de la virer. Vous inquitez pas vous n'etes pas un monstre c'etait surement un enfant demoniaque.
 
 ## Le protocole gRPC
 
 Avec les fonction définies [içi](https://github.com/EnsicoinDevs/ensicoin-proto), on peut faire communiquer des application externes avec son nœuds, comme un mineur ou un explorateur de blocs.
 Pour cela il suffit d'implementer les fonctions définies avec une bibliothèque pour son langage, un certain nombres sont listées [içi](https://packages.grpc.io/).
+
+C'est assez utile pour implementer un mineur pour creer des nouveau blocs, je vous propose d'aller regarder `ensicoin-simon` pour cela.
 
 ## Et ensuite ?
 
