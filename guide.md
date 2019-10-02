@@ -122,9 +122,7 @@ Avant de lire la suite il faudrait que vous lisiez au moins tout les messages, c
 
 ## Le Bootstraping : Comment trouver des amis ?
 
-Faut que je le refasse mais flemme
-
-Pour pouvoir decouvir d'autres pairs il faut déja être connecté à quelqu'un pour pouvoir demander d'autres adresse. C'est donc un peu circulaire, pour trouver d'autres pairs il être dans le réseau. Pour pallier ce problème il est défini un [protocole](decouverte_nœuds.md) sur IRC pour découvrir des nœuds. Chaque nœud publie son adresse en tant que son pseudo sur IRC. Il suffit alors de trouver un nœud et de lui envoyer un message `getaddr`.
+Pour pouvoir decouvir d'autres pairs il faut déja être connecté à quelqu'un pour pouvoir demander d'autres adresse. C'est donc un peu circulaire, pour trouver d'autres pairs il être dans le réseau. Pour pallier ce problème il est défini un [protocole](decouverte_nœuds.md), mais c'est encore en cours de creation.
 
 ## Le stockage
 
@@ -149,6 +147,11 @@ Comme vous pouvez le voir, cette structure de données est très pratique.
 Stocker les blocks directement dans la mémoire implique une perte des données si le nœud est relancé. Il faudra donc plus tard passer à une autre solution, comme des fichiers ou une base de données.
 
 Un tres bon systeme de base de données c'est le K-V DB, key value database. C'est donc tres proche d'un dictionnaire.
+
+Il faut aussi savoir que toutes les ressources font references a des ressources plus vielles, par exemple un block contient le hash du block precedent ou une transaction contiennent le hash d'autres transactions. Appelons ces ressources plus vielles des parents.
+
+Une ressources dont certains parents sont inconnus s'appelle alors une ressource orpheline. Le problème c'est qu'on ne peut pas decider si une ressource est orpheline parceque on a pas encore recu le parent, ou parceque le parent n'as jamais existe. La solution c'est de se dire que si un parent n'as pas ete recu depuis suffisament longtemps c'est qu'il n'as pas existe et que l'on peut oublier l'orpheline.
+
 
 ## La validation des ressources
 
