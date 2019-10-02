@@ -112,7 +112,7 @@ Recevoir une nouvelle transaction entraine donc l'algorithme suivant:
     2. Verifier que ce n'est pas une coinbase si elle n'est pas au debut d'un bloc
     3. Verifier que toute les sorties sont strictement positives
 - Verification complete
-    1. Rechercher pour chaque entree si l'utxo est dans la base de données, si l'utxo n'y ait pas cela signfie que la transacation reférencée est depensee ou n'as jamais existee ! On peut alors ajouter la transaction dans les orphelines et la supprimer si on a trop d'orpheline
+    1. Rechercher pour chaque entree si l'utxo est dans la base de données, si l'utxo n'y ait pas cela signfie que une de trois choses: On a pas encore recu cette entrée, la transaction essaye de depenser de l'argent qu'elle n'as pas, ou elle essaye de depenser de l'argent deja depensee. On met alors la transaction de cote dans les orpheline et si on obtient le parent manquant on peut recommencer a la traiter. Si elle reste orpheline trop longtemps on peut alors l'enlever en se disant quelle est invalide.
     2. La somme des sorties doit etre strictement plus petite que la somme des entree
     3. Si une des sorties est une coinbase il faut regarder si 42 blocs sont passes
     4. Verifier tout les scripts
