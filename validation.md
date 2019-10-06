@@ -97,4 +97,30 @@ Pour calculer la signature d’une transaction, il faut donc remplacer le script
 12. Transmettre la transaction aux autres nœuds.
 13. Pour chaque transaction orpheline qui utilisent cette transaction, recommencer l’algorithme.
 
+Le probleme de cet algorithme c'est que parcourir la chaine c'est extrement cher. Pour cela il existe une maniere de faire qui simplifie l'algorithme, celle des `utxo`. Ce n'est surement pas la seule maniere de faire mais c'est une maniere simple a implementer.
+
+#### Utxo
+
+Cela veux dire "unspent transaction output" (u - tx - o). Cela consiste a garder un index a jour de toutes les sorties non encore depensee dans la chaine. Les utxos sont donc `(hash, index)`. Il faut stoker avec ceci la valeur, le script, la hauteur et si c'est une coinbase.
+
+On a donc une map de `utxo -> utxodata`.
+
+Recevoir une nouvelle transaction entraine donc l'algorithme suivant:
+
+- Sanity check (ne demande pas d'aller chercher les utxo)
+    1. Verifier que la transaction possede une entree et une sortie
+    2. Verifier que ce n'est pas une coinbase si elle n'est pas au debut d'un bloc
+    3. Verifier que toute les sorties sont strictement positives
+- Verification complete
+    1. Rechercher pour chaque entree si l'utxo est dans la base de données, si l'utxo n'y ait pas cela signfie que une de trois choses: On a pas encore recu cette entrée, la transaction essaye de depenser de l'argent qu'elle n'as pas, ou elle essaye de depenser de l'argent deja depensee. On met alors la transaction de cote dans les orpheline et si on obtient le parent manquant on peut recommencer a la traiter. Si elle reste orpheline trop longtemps on peut alors l'enlever en se disant quelle est invalide.
+    2. La somme des sorties doit etre strictement plus petite que la somme des entree
+    3. Si une des sorties est une coinbase il faut regarder si 42 blocs sont passes
+    4. Verifier tout les scripts
+- Traitement de la transaction
+    1. Rajouter la transcation a la piscine (mempool)
+    2. Transmettre la transcation
+    3. Pour chaque orpheline qui ne l'est plus, recommencer l'algorithme
+
+Mais ce n'est pas tout ! Quand on obtient un bloc valide il faut penser a enlever de la base des utxo toutes les sorties reférencées par les entrées du bloc, sinon on aurait des transacations depensables plusieurs fois. Si on gere bien cet invariant on a jamais besoin d'aller regarder dans la chaîne si la transaction existe
+
 Si la transaction est une coinbase, il convient de se référer à ce document [consensus.md](consensus.md), où des détails sont donnés sur la création des ENSICOIN.
